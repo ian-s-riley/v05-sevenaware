@@ -1,0 +1,65 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplifydc198c4383344-staging-162254-authRole",
+      "UnauthRoleArn": "arn:aws:iam::059437111214:role/amplify-amplifydc198c4383344-staging-162254-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::059437111214:role/amplify-amplifydc198c4383344-staging-162254-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-amplifydc198c4383344-staging-162254-deployment",
+      "UnauthRoleName": "amplify-amplifydc198c4383344-staging-162254-unauthRole",
+      "StackName": "amplify-amplifydc198c4383344-staging-162254",
+      "StackId": "arn:aws:cloudformation:us-east-1:059437111214:stack/amplify-amplifydc198c4383344-staging-162254/bd1ed7e0-e976-11eb-a263-0e9182e4a795",
+      "AmplifyAppId": "d10iuc29hh15tu"
+    }
+  },
+  "auth": {
+    "v05sevenaware": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "output": {
+        "UserPoolId": "us-east-1_2PnaUCajA",
+        "AppClientIDWeb": "38tk3vagliv6h7hk88t8v98mep",
+        "AppClientID": "8dik0u0e63oin6r7t071vg5g8",
+        "IdentityPoolId": "us-east-1:2c52eade-3126-4d26-a498-5a5c4fe21fb5",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:059437111214:userpool/us-east-1_2PnaUCajA",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "UserPoolName": "v05sevenaware"
+      },
+      "lastPushTimeStamp": "2021-07-22T02:16:57.639Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifydc198c4383344-staging-162254-deployment/amplify-cfn-templates/auth/v05sevenaware-cloudformation-template.yml",
+        "logicalId": "authv05sevenaware"
+      }
+    }
+  },
+  "api": {
+    "v05sevenaware": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 365,
+              "description": "v05sevenaware-apikey"
+            }
+          },
+          "additionalAuthenticationProviders": []
+        },
+        "GraphQLAPIIdOutput": "3e3o5xcmerelnikxhysqesgh6i",
+        "GraphQLAPIEndpointOutput": "https://24qbov3tabhthnovpm4qlvizsq.appsync-api.us-east-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-67hio6g2yzggnbw7idiu6565q4"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifydc198c4383344-staging-162254-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiv05sevenaware"
+      },
+      "lastPushTimeStamp": "2021-07-22T02:17:00.445Z",
+      "lastPushDirHash": "Zt2I9sxWmkGrrmraRq0hekdYdkA="
+    }
+  },
+  "storage": {}
+}

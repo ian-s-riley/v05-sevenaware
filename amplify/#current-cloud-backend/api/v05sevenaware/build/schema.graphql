@@ -1,0 +1,913 @@
+type Todo {
+  id: ID!
+  name: String!
+  description: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type User {
+  id: ID!
+  userId: String
+  formId: String
+  userType: String
+  email: String
+  password: String
+  preifx: String
+  firstName: String
+  middleName: String
+  lastName: String
+  suffix: String
+  addressId: String
+  title: String
+  profile: String
+  image: String
+  tin: String
+  ssn: String
+  idType: String
+  percentOwner: Float
+  sevenAwareAgree: Boolean
+  status: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Form {
+  id: ID!
+  userId: String
+  formId: String
+  sopVersion: String
+  loanAmount: Float
+  screenId: String
+  screenNavigation: String
+  percentComplete: Int
+  restricted: Boolean
+  restrictedSpeculative: Boolean
+  restrictedCoins: Boolean
+  restrictedLending: Boolean
+  restrictedPackaging: Boolean
+  restrictedPyramid: Boolean
+  restrictedIllegal: Boolean
+  restrictedGambling: Boolean
+  ineligible: Boolean
+  ineligibleNonProfit: Boolean
+  ineligibleRealestate: Boolean
+  ineligibleLending: Boolean
+  ineligiblePyramid: Boolean
+  ineligibleGambling: Boolean
+  ineligibleIllegal: Boolean
+  forProfit: Boolean
+  us: Boolean
+  businessEmail: Boolean
+  entityType: String
+  fein: String
+  noFein: Boolean
+  ssn: String
+  tin: String
+  tinExpiration: String
+  jointTaxes: Boolean
+  jointFirst: Boolean
+  jointFirstSsn: String
+  jointFirstTin: String
+  businessTin: String
+  businessTinType: String
+  businessName: String
+  dba: String
+  usesDba: Boolean
+  businessImage: String
+  businessAddressId: String
+  nacis: String
+  agreeLexisNexis: Boolean
+  fullOwner: Boolean
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Screen {
+  id: ID!
+  formId: String
+  sopVersion: String
+  userType: String
+  percentComplete: Int
+  stage: String
+  stageHeader: String
+  stageText: String
+  stagePercentComplete: Int
+  step: String
+  stepHeader: String
+  stepText: String
+  stepPercentComplete: Int
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Address {
+  id: ID!
+  userId: String
+  addressType: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  zipPlus4: String
+  county: String
+  country: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Notification {
+  id: ID!
+  fromUserId: String!
+  toUserId: String!
+  fromEmail: String
+  toEmail: String
+  fromName: String
+  toName: String
+  action: String
+  status: String
+  badgeColor: String
+  badgeIcon: String
+  title: String
+  body: String
+  htmlBody: String
+  emailBody: String
+  smsBody: String
+  footerTitle: String
+  footer: String
+  oneTimeLink: String
+  oneTimeLinkUseDate: String
+  businessName: String
+  percentOwner: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelTodoConnection {
+  items: [Todo]
+  nextToken: String
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelTodoFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  and: [ModelTodoFilterInput]
+  or: [ModelTodoFilterInput]
+  not: ModelTodoFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Query {
+  getTodo(id: ID!): Todo
+  listTodos(filter: ModelTodoFilterInput, limit: Int, nextToken: String): ModelTodoConnection
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  getForm(id: ID!): Form
+  listForms(filter: ModelFormFilterInput, limit: Int, nextToken: String): ModelFormConnection
+  getScreen(id: ID!): Screen
+  listScreens(filter: ModelScreenFilterInput, limit: Int, nextToken: String): ModelScreenConnection
+  getAddress(id: ID!): Address
+  listAddresses(filter: ModelAddressFilterInput, limit: Int, nextToken: String): ModelAddressConnection
+  getNotification(id: ID!): Notification
+  listNotifications(filter: ModelNotificationFilterInput, limit: Int, nextToken: String): ModelNotificationConnection
+}
+
+input CreateTodoInput {
+  id: ID
+  name: String!
+  description: String
+}
+
+input UpdateTodoInput {
+  id: ID!
+  name: String
+  description: String
+}
+
+input DeleteTodoInput {
+  id: ID!
+}
+
+type Mutation {
+  createTodo(input: CreateTodoInput!, condition: ModelTodoConditionInput): Todo
+  updateTodo(input: UpdateTodoInput!, condition: ModelTodoConditionInput): Todo
+  deleteTodo(input: DeleteTodoInput!, condition: ModelTodoConditionInput): Todo
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+  createForm(input: CreateFormInput!, condition: ModelFormConditionInput): Form
+  updateForm(input: UpdateFormInput!, condition: ModelFormConditionInput): Form
+  deleteForm(input: DeleteFormInput!, condition: ModelFormConditionInput): Form
+  createScreen(input: CreateScreenInput!, condition: ModelScreenConditionInput): Screen
+  updateScreen(input: UpdateScreenInput!, condition: ModelScreenConditionInput): Screen
+  deleteScreen(input: DeleteScreenInput!, condition: ModelScreenConditionInput): Screen
+  createAddress(input: CreateAddressInput!, condition: ModelAddressConditionInput): Address
+  updateAddress(input: UpdateAddressInput!, condition: ModelAddressConditionInput): Address
+  deleteAddress(input: DeleteAddressInput!, condition: ModelAddressConditionInput): Address
+  createNotification(input: CreateNotificationInput!, condition: ModelNotificationConditionInput): Notification
+  updateNotification(input: UpdateNotificationInput!, condition: ModelNotificationConditionInput): Notification
+  deleteNotification(input: DeleteNotificationInput!, condition: ModelNotificationConditionInput): Notification
+}
+
+input ModelTodoConditionInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  and: [ModelTodoConditionInput]
+  or: [ModelTodoConditionInput]
+  not: ModelTodoConditionInput
+}
+
+type Subscription {
+  onCreateTodo: Todo @aws_subscribe(mutations: ["createTodo"])
+  onUpdateTodo: Todo @aws_subscribe(mutations: ["updateTodo"])
+  onDeleteTodo: Todo @aws_subscribe(mutations: ["deleteTodo"])
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
+  onCreateForm: Form @aws_subscribe(mutations: ["createForm"])
+  onUpdateForm: Form @aws_subscribe(mutations: ["updateForm"])
+  onDeleteForm: Form @aws_subscribe(mutations: ["deleteForm"])
+  onCreateScreen: Screen @aws_subscribe(mutations: ["createScreen"])
+  onUpdateScreen: Screen @aws_subscribe(mutations: ["updateScreen"])
+  onDeleteScreen: Screen @aws_subscribe(mutations: ["deleteScreen"])
+  onCreateAddress: Address @aws_subscribe(mutations: ["createAddress"])
+  onUpdateAddress: Address @aws_subscribe(mutations: ["updateAddress"])
+  onDeleteAddress: Address @aws_subscribe(mutations: ["deleteAddress"])
+  onCreateNotification: Notification @aws_subscribe(mutations: ["createNotification"])
+  onUpdateNotification: Notification @aws_subscribe(mutations: ["updateNotification"])
+  onDeleteNotification: Notification @aws_subscribe(mutations: ["deleteNotification"])
+}
+
+type ModelUserConnection {
+  items: [User]
+  nextToken: String
+}
+
+input ModelUserFilterInput {
+  id: ModelIDInput
+  userId: ModelStringInput
+  formId: ModelStringInput
+  userType: ModelStringInput
+  email: ModelStringInput
+  password: ModelStringInput
+  preifx: ModelStringInput
+  firstName: ModelStringInput
+  middleName: ModelStringInput
+  lastName: ModelStringInput
+  suffix: ModelStringInput
+  addressId: ModelStringInput
+  title: ModelStringInput
+  profile: ModelStringInput
+  image: ModelStringInput
+  tin: ModelStringInput
+  ssn: ModelStringInput
+  idType: ModelStringInput
+  percentOwner: ModelFloatInput
+  sevenAwareAgree: ModelBooleanInput
+  status: ModelStringInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+input CreateUserInput {
+  id: ID
+  userId: String
+  formId: String
+  userType: String
+  email: String
+  password: String
+  preifx: String
+  firstName: String
+  middleName: String
+  lastName: String
+  suffix: String
+  addressId: String
+  title: String
+  profile: String
+  image: String
+  tin: String
+  ssn: String
+  idType: String
+  percentOwner: Float
+  sevenAwareAgree: Boolean
+  status: String
+}
+
+input UpdateUserInput {
+  id: ID!
+  userId: String
+  formId: String
+  userType: String
+  email: String
+  password: String
+  preifx: String
+  firstName: String
+  middleName: String
+  lastName: String
+  suffix: String
+  addressId: String
+  title: String
+  profile: String
+  image: String
+  tin: String
+  ssn: String
+  idType: String
+  percentOwner: Float
+  sevenAwareAgree: Boolean
+  status: String
+}
+
+input DeleteUserInput {
+  id: ID!
+}
+
+input ModelUserConditionInput {
+  userId: ModelStringInput
+  formId: ModelStringInput
+  userType: ModelStringInput
+  email: ModelStringInput
+  password: ModelStringInput
+  preifx: ModelStringInput
+  firstName: ModelStringInput
+  middleName: ModelStringInput
+  lastName: ModelStringInput
+  suffix: ModelStringInput
+  addressId: ModelStringInput
+  title: ModelStringInput
+  profile: ModelStringInput
+  image: ModelStringInput
+  tin: ModelStringInput
+  ssn: ModelStringInput
+  idType: ModelStringInput
+  percentOwner: ModelFloatInput
+  sevenAwareAgree: ModelBooleanInput
+  status: ModelStringInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+}
+
+type ModelFormConnection {
+  items: [Form]
+  nextToken: String
+}
+
+input ModelFormFilterInput {
+  id: ModelIDInput
+  userId: ModelStringInput
+  formId: ModelStringInput
+  sopVersion: ModelStringInput
+  loanAmount: ModelFloatInput
+  screenId: ModelStringInput
+  screenNavigation: ModelStringInput
+  percentComplete: ModelIntInput
+  restricted: ModelBooleanInput
+  restrictedSpeculative: ModelBooleanInput
+  restrictedCoins: ModelBooleanInput
+  restrictedLending: ModelBooleanInput
+  restrictedPackaging: ModelBooleanInput
+  restrictedPyramid: ModelBooleanInput
+  restrictedIllegal: ModelBooleanInput
+  restrictedGambling: ModelBooleanInput
+  ineligible: ModelBooleanInput
+  ineligibleNonProfit: ModelBooleanInput
+  ineligibleRealestate: ModelBooleanInput
+  ineligibleLending: ModelBooleanInput
+  ineligiblePyramid: ModelBooleanInput
+  ineligibleGambling: ModelBooleanInput
+  ineligibleIllegal: ModelBooleanInput
+  forProfit: ModelBooleanInput
+  us: ModelBooleanInput
+  businessEmail: ModelBooleanInput
+  entityType: ModelStringInput
+  fein: ModelStringInput
+  noFein: ModelBooleanInput
+  ssn: ModelStringInput
+  tin: ModelStringInput
+  tinExpiration: ModelStringInput
+  jointTaxes: ModelBooleanInput
+  jointFirst: ModelBooleanInput
+  jointFirstSsn: ModelStringInput
+  jointFirstTin: ModelStringInput
+  businessTin: ModelStringInput
+  businessTinType: ModelStringInput
+  businessName: ModelStringInput
+  dba: ModelStringInput
+  usesDba: ModelBooleanInput
+  businessImage: ModelStringInput
+  businessAddressId: ModelStringInput
+  nacis: ModelStringInput
+  agreeLexisNexis: ModelBooleanInput
+  fullOwner: ModelBooleanInput
+  and: [ModelFormFilterInput]
+  or: [ModelFormFilterInput]
+  not: ModelFormFilterInput
+}
+
+input CreateFormInput {
+  id: ID
+  userId: String
+  formId: String
+  sopVersion: String
+  loanAmount: Float
+  screenId: String
+  screenNavigation: String
+  percentComplete: Int
+  restricted: Boolean
+  restrictedSpeculative: Boolean
+  restrictedCoins: Boolean
+  restrictedLending: Boolean
+  restrictedPackaging: Boolean
+  restrictedPyramid: Boolean
+  restrictedIllegal: Boolean
+  restrictedGambling: Boolean
+  ineligible: Boolean
+  ineligibleNonProfit: Boolean
+  ineligibleRealestate: Boolean
+  ineligibleLending: Boolean
+  ineligiblePyramid: Boolean
+  ineligibleGambling: Boolean
+  ineligibleIllegal: Boolean
+  forProfit: Boolean
+  us: Boolean
+  businessEmail: Boolean
+  entityType: String
+  fein: String
+  noFein: Boolean
+  ssn: String
+  tin: String
+  tinExpiration: String
+  jointTaxes: Boolean
+  jointFirst: Boolean
+  jointFirstSsn: String
+  jointFirstTin: String
+  businessTin: String
+  businessTinType: String
+  businessName: String
+  dba: String
+  usesDba: Boolean
+  businessImage: String
+  businessAddressId: String
+  nacis: String
+  agreeLexisNexis: Boolean
+  fullOwner: Boolean
+}
+
+input UpdateFormInput {
+  id: ID!
+  userId: String
+  formId: String
+  sopVersion: String
+  loanAmount: Float
+  screenId: String
+  screenNavigation: String
+  percentComplete: Int
+  restricted: Boolean
+  restrictedSpeculative: Boolean
+  restrictedCoins: Boolean
+  restrictedLending: Boolean
+  restrictedPackaging: Boolean
+  restrictedPyramid: Boolean
+  restrictedIllegal: Boolean
+  restrictedGambling: Boolean
+  ineligible: Boolean
+  ineligibleNonProfit: Boolean
+  ineligibleRealestate: Boolean
+  ineligibleLending: Boolean
+  ineligiblePyramid: Boolean
+  ineligibleGambling: Boolean
+  ineligibleIllegal: Boolean
+  forProfit: Boolean
+  us: Boolean
+  businessEmail: Boolean
+  entityType: String
+  fein: String
+  noFein: Boolean
+  ssn: String
+  tin: String
+  tinExpiration: String
+  jointTaxes: Boolean
+  jointFirst: Boolean
+  jointFirstSsn: String
+  jointFirstTin: String
+  businessTin: String
+  businessTinType: String
+  businessName: String
+  dba: String
+  usesDba: Boolean
+  businessImage: String
+  businessAddressId: String
+  nacis: String
+  agreeLexisNexis: Boolean
+  fullOwner: Boolean
+}
+
+input DeleteFormInput {
+  id: ID!
+}
+
+input ModelFormConditionInput {
+  userId: ModelStringInput
+  formId: ModelStringInput
+  sopVersion: ModelStringInput
+  loanAmount: ModelFloatInput
+  screenId: ModelStringInput
+  screenNavigation: ModelStringInput
+  percentComplete: ModelIntInput
+  restricted: ModelBooleanInput
+  restrictedSpeculative: ModelBooleanInput
+  restrictedCoins: ModelBooleanInput
+  restrictedLending: ModelBooleanInput
+  restrictedPackaging: ModelBooleanInput
+  restrictedPyramid: ModelBooleanInput
+  restrictedIllegal: ModelBooleanInput
+  restrictedGambling: ModelBooleanInput
+  ineligible: ModelBooleanInput
+  ineligibleNonProfit: ModelBooleanInput
+  ineligibleRealestate: ModelBooleanInput
+  ineligibleLending: ModelBooleanInput
+  ineligiblePyramid: ModelBooleanInput
+  ineligibleGambling: ModelBooleanInput
+  ineligibleIllegal: ModelBooleanInput
+  forProfit: ModelBooleanInput
+  us: ModelBooleanInput
+  businessEmail: ModelBooleanInput
+  entityType: ModelStringInput
+  fein: ModelStringInput
+  noFein: ModelBooleanInput
+  ssn: ModelStringInput
+  tin: ModelStringInput
+  tinExpiration: ModelStringInput
+  jointTaxes: ModelBooleanInput
+  jointFirst: ModelBooleanInput
+  jointFirstSsn: ModelStringInput
+  jointFirstTin: ModelStringInput
+  businessTin: ModelStringInput
+  businessTinType: ModelStringInput
+  businessName: ModelStringInput
+  dba: ModelStringInput
+  usesDba: ModelBooleanInput
+  businessImage: ModelStringInput
+  businessAddressId: ModelStringInput
+  nacis: ModelStringInput
+  agreeLexisNexis: ModelBooleanInput
+  fullOwner: ModelBooleanInput
+  and: [ModelFormConditionInput]
+  or: [ModelFormConditionInput]
+  not: ModelFormConditionInput
+}
+
+type ModelScreenConnection {
+  items: [Screen]
+  nextToken: String
+}
+
+input ModelScreenFilterInput {
+  id: ModelIDInput
+  formId: ModelStringInput
+  sopVersion: ModelStringInput
+  userType: ModelStringInput
+  percentComplete: ModelIntInput
+  stage: ModelStringInput
+  stageHeader: ModelStringInput
+  stageText: ModelStringInput
+  stagePercentComplete: ModelIntInput
+  step: ModelStringInput
+  stepHeader: ModelStringInput
+  stepText: ModelStringInput
+  stepPercentComplete: ModelIntInput
+  and: [ModelScreenFilterInput]
+  or: [ModelScreenFilterInput]
+  not: ModelScreenFilterInput
+}
+
+input CreateScreenInput {
+  id: ID
+  formId: String
+  sopVersion: String
+  userType: String
+  percentComplete: Int
+  stage: String
+  stageHeader: String
+  stageText: String
+  stagePercentComplete: Int
+  step: String
+  stepHeader: String
+  stepText: String
+  stepPercentComplete: Int
+}
+
+input UpdateScreenInput {
+  id: ID!
+  formId: String
+  sopVersion: String
+  userType: String
+  percentComplete: Int
+  stage: String
+  stageHeader: String
+  stageText: String
+  stagePercentComplete: Int
+  step: String
+  stepHeader: String
+  stepText: String
+  stepPercentComplete: Int
+}
+
+input DeleteScreenInput {
+  id: ID!
+}
+
+input ModelScreenConditionInput {
+  formId: ModelStringInput
+  sopVersion: ModelStringInput
+  userType: ModelStringInput
+  percentComplete: ModelIntInput
+  stage: ModelStringInput
+  stageHeader: ModelStringInput
+  stageText: ModelStringInput
+  stagePercentComplete: ModelIntInput
+  step: ModelStringInput
+  stepHeader: ModelStringInput
+  stepText: ModelStringInput
+  stepPercentComplete: ModelIntInput
+  and: [ModelScreenConditionInput]
+  or: [ModelScreenConditionInput]
+  not: ModelScreenConditionInput
+}
+
+type ModelAddressConnection {
+  items: [Address]
+  nextToken: String
+}
+
+input ModelAddressFilterInput {
+  id: ModelIDInput
+  userId: ModelStringInput
+  addressType: ModelStringInput
+  address1: ModelStringInput
+  address2: ModelStringInput
+  city: ModelStringInput
+  state: ModelStringInput
+  zip: ModelStringInput
+  zipPlus4: ModelStringInput
+  county: ModelStringInput
+  country: ModelStringInput
+  and: [ModelAddressFilterInput]
+  or: [ModelAddressFilterInput]
+  not: ModelAddressFilterInput
+}
+
+input CreateAddressInput {
+  id: ID
+  userId: String
+  addressType: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  zipPlus4: String
+  county: String
+  country: String
+}
+
+input UpdateAddressInput {
+  id: ID!
+  userId: String
+  addressType: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  zipPlus4: String
+  county: String
+  country: String
+}
+
+input DeleteAddressInput {
+  id: ID!
+}
+
+input ModelAddressConditionInput {
+  userId: ModelStringInput
+  addressType: ModelStringInput
+  address1: ModelStringInput
+  address2: ModelStringInput
+  city: ModelStringInput
+  state: ModelStringInput
+  zip: ModelStringInput
+  zipPlus4: ModelStringInput
+  county: ModelStringInput
+  country: ModelStringInput
+  and: [ModelAddressConditionInput]
+  or: [ModelAddressConditionInput]
+  not: ModelAddressConditionInput
+}
+
+type ModelNotificationConnection {
+  items: [Notification]
+  nextToken: String
+}
+
+input ModelNotificationFilterInput {
+  id: ModelIDInput
+  fromUserId: ModelStringInput
+  toUserId: ModelStringInput
+  fromEmail: ModelStringInput
+  toEmail: ModelStringInput
+  fromName: ModelStringInput
+  toName: ModelStringInput
+  action: ModelStringInput
+  status: ModelStringInput
+  badgeColor: ModelStringInput
+  badgeIcon: ModelStringInput
+  title: ModelStringInput
+  body: ModelStringInput
+  htmlBody: ModelStringInput
+  emailBody: ModelStringInput
+  smsBody: ModelStringInput
+  footerTitle: ModelStringInput
+  footer: ModelStringInput
+  oneTimeLink: ModelStringInput
+  oneTimeLinkUseDate: ModelStringInput
+  businessName: ModelStringInput
+  percentOwner: ModelStringInput
+  and: [ModelNotificationFilterInput]
+  or: [ModelNotificationFilterInput]
+  not: ModelNotificationFilterInput
+}
+
+input CreateNotificationInput {
+  id: ID
+  fromUserId: String!
+  toUserId: String!
+  fromEmail: String
+  toEmail: String
+  fromName: String
+  toName: String
+  action: String
+  status: String
+  badgeColor: String
+  badgeIcon: String
+  title: String
+  body: String
+  htmlBody: String
+  emailBody: String
+  smsBody: String
+  footerTitle: String
+  footer: String
+  oneTimeLink: String
+  oneTimeLinkUseDate: String
+  businessName: String
+  percentOwner: String
+}
+
+input UpdateNotificationInput {
+  id: ID!
+  fromUserId: String
+  toUserId: String
+  fromEmail: String
+  toEmail: String
+  fromName: String
+  toName: String
+  action: String
+  status: String
+  badgeColor: String
+  badgeIcon: String
+  title: String
+  body: String
+  htmlBody: String
+  emailBody: String
+  smsBody: String
+  footerTitle: String
+  footer: String
+  oneTimeLink: String
+  oneTimeLinkUseDate: String
+  businessName: String
+  percentOwner: String
+}
+
+input DeleteNotificationInput {
+  id: ID!
+}
+
+input ModelNotificationConditionInput {
+  fromUserId: ModelStringInput
+  toUserId: ModelStringInput
+  fromEmail: ModelStringInput
+  toEmail: ModelStringInput
+  fromName: ModelStringInput
+  toName: ModelStringInput
+  action: ModelStringInput
+  status: ModelStringInput
+  badgeColor: ModelStringInput
+  badgeIcon: ModelStringInput
+  title: ModelStringInput
+  body: ModelStringInput
+  htmlBody: ModelStringInput
+  emailBody: ModelStringInput
+  smsBody: ModelStringInput
+  footerTitle: ModelStringInput
+  footer: ModelStringInput
+  oneTimeLink: ModelStringInput
+  oneTimeLinkUseDate: ModelStringInput
+  businessName: ModelStringInput
+  percentOwner: ModelStringInput
+  and: [ModelNotificationConditionInput]
+  or: [ModelNotificationConditionInput]
+  not: ModelNotificationConditionInput
+}
