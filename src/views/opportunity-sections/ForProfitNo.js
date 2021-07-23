@@ -21,30 +21,15 @@ function ForProfitNo(prop) {
     }
 
     return (
-        <div className="profile-content section">
-        <Container>        
+        <Form className="settings-form">
         <Row>
-            <Col className="d-flex align-items-center justify-content-center" md="2"></Col>
-            <Col className="ml-auto mr-auto" md="8">
-            
-            <Form className="settings-form">
-              <Row>
-                <Col className="ml-auto mr-auto" md="10">
-                    <Label>
-                    Non-profit businesses do not quality for 7(a) loans from the SBA.
-                    </Label>
-                </Col>
-              </Row>               
-            </Form>
-            </Col>
-            <Col className="d-flex align-items-center" md="2">
-
-                <Buttons back={handleBackClick}/>
-
-            </Col>
-        </Row>
-        </Container>
-    </div>
+          <Col className="ml-auto mr-auto" md="10">
+              <Label>
+              Non-profit businesses do not quality for 7(a) loans from the SBA.
+              </Label>
+          </Col>
+        </Row>               
+      </Form>
     );
 }
 

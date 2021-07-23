@@ -12,22 +12,8 @@ export const formSlice = createSlice({
     screenId: "",
     screenNavigation: "", 
     percentComplete: 0,
-    loanAmount: 0,           
-    restricted: null,
-    restrictedSpeculative: null,
-    restrictedCoins: null,
-    restrictedLending: null,
-    restrictedPackaging: null,
-    restrictedPyramid: null,
-    restrictedIllegal: null,
-    restrictedGambling: null,
-    ineligible: null,
-    ineligibleNonProfit: null,
-    ineligibleRealestate: null,
-    ineligibleLending: null,
-    ineligiblePyramid: null,
-    ineligibleGambling: null,
-    ineligibleIllegal: null,
+    loanAmount: 0,        
+    ineligible: false,
     forProfit: true,
     us: true,
     businessEmail: "",
@@ -53,29 +39,14 @@ export const formSlice = createSlice({
   },
   reducers: {
     updateForm: (state, action) => {
-      //console.log('updateForm: action', action)
-      //console.log('updateForm: state',state)
+      console.log('updateForm: action', action)
       state.id = action.payload.id
       state.userId = action.payload.userId
       state.screenId = action.payload.screenId
       state.screenNavigation = action.payload.screenNavigation
       state.percentComplete = action.payload.percentComplete 
       state.loanAmount = action.payload.loanAmount    
-      state.restricted = action.payload.restricted     
-      state.restrictedSpeculative = action.payload.restrictedSpeculative
-      state.restrictedCoins = action.payload.restrictedCoins
-      state.restrictedLending = action.payload.restrictedLending
-      state.restrictedPackaging = action.payload.restrictedPackaging
-      state.restrictedPyramid = action.payload.restrictedPyramid
-      state.restrictedIllegal = action.payload.restrictedIllegal
-      state.restrictedGambling = action.payload.restrictedGambling
       state.ineligible = action.payload.ineligible
-      state.ineligibleNonProfit = action.payload.ineligibleNonProfit
-      state.ineligibleRealestate = action.payload.ineligibleRealestate
-      state.ineligibleLending = action.payload.ineligibleLending
-      state.ineligiblePyramid = action.payload.ineligiblePyramid
-      state.ineligibleGambling = action.payload.ineligibleGambling
-      state.ineligibleIllegal = action.payload.ineligibleIllegal
       state.forProfit = action.payload.forProfit
       state.us = action.payload.us
       state.businessEmail = action.payload.businessEmail
@@ -99,10 +70,27 @@ export const formSlice = createSlice({
       state.agreeLexisNexis = action.payload.agreeLexisNexis   
       state.fullOwner = action.payload.fullOwner
     },
+    updateScreenNavigation: (state, action) => {
+      state.screenNavigation = action.payload.screenNavigation
+    },
+    updateIneligible: (state, action) => {
+      state.ineligible = action.payload.ineligible
+    },
+    updateForProfit: (state, action) => {
+      state.forProfit = action.payload.forProfit
+    },
+    updateUS: (state, action) => {
+      state.us = action.payload.us
+    },
   },
 });
 
-export const { updateForm } = formSlice.actions;
+export const { 
+  updateForm, 
+  updateIneligible,
+  updateForProfit,
+  updateUS,
+} = formSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -120,21 +108,7 @@ export const updateFormAsync = form => dispatch => {
           screenNavigation: form.screenNavigation,
           loanAmount: form.loanAmount,
           percentComplete: form.percentComplete,
-          restricted: form.restricted,
-          restrictedSpeculative: form.restrictedSpeculative,
-          restrictedCoins: form.restrictedCoins,
-          restrictedLending: form.restrictedLending,
-          restrictedPackaging: form.restrictedPackaging,
-          restrictedPyramid: form.restrictedPyramid,
-          restrictedIllegal: form.restrictedIllegal,
-          restrictedGambling: form.restrictedGambling,
           ineligible: form.ineligible,
-          ineligibleNonProfit: form.ineligibleNonProfit,
-          ineligibleRealestate: form.ineligibleRealestate,
-          ineligibleLending: form.ineligibleLending,
-          ineligiblePyramid: form.ineligiblePyramid,
-          ineligibleGambling: form.ineligibleGambling,
-          ineligibleIllegal: form.ineligibleIllegal,
           forProfit: form.forProfit,
           us: form.us,
           businessEmail: form.businessEmail,

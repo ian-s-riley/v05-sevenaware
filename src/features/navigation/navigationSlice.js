@@ -8,7 +8,7 @@ export const navigationSlice = createSlice({
     userType: "",
     formId: null,    
     screenId: "",  
-    screenNavigation: ["Eligibility>Ineligible"],
+    screenNavigation: ["Eligibility>"],
     oneTimeLink: "",
 
     // userName: "Mike B.", 

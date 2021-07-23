@@ -47,6 +47,7 @@ function ProfileSignUp(prop) {
     const [emailState, setEmailState] = useState("");
     const [passwordState, setPasswordState] = useState("");
     const [password2State, setPassword2State] = useState("");
+    const [authorizedSignatory, setAuthorizedSigantory] = useState(true);
     const [userExists, setUserExists] = useState(false);
     const [agreeSevenAware, setAgreeSevenAware] = useState(false);
 
@@ -175,13 +176,7 @@ function ProfileSignUp(prop) {
     };
 
   return (
-    <div className="profile-content section">
-        <Container>        
-        <Row>
-            <Col className="d-flex align-items-center justify-content-center" md="2"></Col>
-            <Col className="ml-auto mr-auto" md="8">
-            
-            <Form className="settings-form">     
+    <Form className="settings-form">     
                 <Row>
                 <Col className="ml-auto mr-auto h5" md="10">
                 <FormGroup className={emailState === "success" ? "has-success" : null}>
@@ -198,10 +193,7 @@ function ProfileSignUp(prop) {
                     }
                     setEmail(event.target.value);
                     }}
-                /> 
-                <FormText>
-                We recommend an equity owner that is an authorized person create the account.
-                </FormText>        
+                />                       
             </FormGroup> 
             <Row>
             <Col className="ml-auto mr-auto" md="6">
@@ -253,45 +245,59 @@ function ProfileSignUp(prop) {
                         defaultChecked={agreeSevenAware}     
                         onClick={() => setAgreeSevenAware(!agreeSevenAware)}
                     />{' '}
-                        I understand how 7(a)ware will use and protect my data. And I agree to the terms & conditions.
+                        <small>I understand how 7(a)ware will use and protect my data. And I agree to the terms & conditions.
                         <span className="form-check-sign">
                             <span className="check"></span>
                         </span>
+                        </small>
                     </Label>
+                </FormGroup>
+
+                {authorizedSignatory ? (
+                    <FormGroup>
+                <FormText>
+                We recommend an equity owner that is an authorized person create the account. <a href="#" onClick={() => setAuthorizedSigantory(false)}>
+                Click here</a> to add someone else authorizied signatory.
+                </FormText>     
                 </FormGroup> 
+                ) : (
+                    <FormGroup>
+                <FormText>
+                We recommend an equity owner that is an authorized person create the account. <a href="#" onClick={() => setAuthorizedSigantory(true)}>
+                Click here</a> to set yourself as the authorized signatory.
+                </FormText>     
+                </FormGroup> 
+                )}                    
+                <br/>                
+                
+
+                {!authorizedSignatory && (
+                    <FormGroup className={emailState === "success" ? "has-success" : null}>
+                <Label for="businessEmail" className="control-label">Email Address (User ID)</Label>
+                <Input 
+                type="text" 
+                name="businessEmail" 
+                id="businessEmail" 
+                onChange = {event => {
+                    if (verifyEmail(event.target.value)) {
+                        setEmailState("success");
+                    } else {
+                        setEmailState("error");
+                    }
+                    setEmail(event.target.value);
+                    }}
+                />                       
+            </FormGroup> 
+                )}
+
                 </Col>
-                </Row>           
+                </Row>     
+                
+
+
+                   
                 
             </Form>
-
-            </Col>
-            <Col className="d-flex align-items-center" md="2">
-
-                <Buttons next={handleNextClick} back={handleBackClick}/>
-
-            </Col>
-        </Row>
-        </Container>
-        <Modal isOpen={userExists} toggle={() => setUserExists(false)}>
-        <div className="modal-header">
-          <h5 className="modal-title" id="exampleModalLiveLabel">
-            You've already got an account.
-          </h5>
-          <button
-            aria-label="Close"
-            className="close"
-            data-dismiss="modal"
-            type="button"
-            onClick={() => setUserExists(false)}
-          >
-            <span aria-hidden={true}>×</span>
-          </button>
-        </div>
-        <div className="modal-body">
-          <p>Your email/username (<small>{email}</small>) already already exists in the system. Please sign in or verify your account to continue.</p>          
-        </div>
-      </Modal>
-    </div>
 
   );
 }
