@@ -1,39 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateTodo = /* GraphQL */ `
-  subscription OnCreateTodo {
-    onCreateTodo {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateTodo = /* GraphQL */ `
-  subscription OnUpdateTodo {
-    onUpdateTodo {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteTodo = /* GraphQL */ `
-  subscription OnDeleteTodo {
-    onDeleteTodo {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser {
     onCreateUser {
@@ -57,7 +24,6 @@ export const onCreateUser = /* GraphQL */ `
       idType
       percentOwner
       sevenAwareAgree
-      status
       createdAt
       updatedAt
     }
@@ -86,7 +52,6 @@ export const onUpdateUser = /* GraphQL */ `
       idType
       percentOwner
       sevenAwareAgree
-      status
       createdAt
       updatedAt
     }
@@ -115,7 +80,6 @@ export const onDeleteUser = /* GraphQL */ `
       idType
       percentOwner
       sevenAwareAgree
-      status
       createdAt
       updatedAt
     }
@@ -126,27 +90,14 @@ export const onCreateForm = /* GraphQL */ `
     onCreateForm {
       id
       userId
+      authorizedSignatoryUserId
       formId
       sopVersion
       loanAmount
       screenId
       screenNavigation
       percentComplete
-      restricted
-      restrictedSpeculative
-      restrictedCoins
-      restrictedLending
-      restrictedPackaging
-      restrictedPyramid
-      restrictedIllegal
-      restrictedGambling
       ineligible
-      ineligibleNonProfit
-      ineligibleRealestate
-      ineligibleLending
-      ineligiblePyramid
-      ineligibleGambling
-      ineligibleIllegal
       forProfit
       us
       businessEmail
@@ -180,27 +131,14 @@ export const onUpdateForm = /* GraphQL */ `
     onUpdateForm {
       id
       userId
+      authorizedSignatoryUserId
       formId
       sopVersion
       loanAmount
       screenId
       screenNavigation
       percentComplete
-      restricted
-      restrictedSpeculative
-      restrictedCoins
-      restrictedLending
-      restrictedPackaging
-      restrictedPyramid
-      restrictedIllegal
-      restrictedGambling
       ineligible
-      ineligibleNonProfit
-      ineligibleRealestate
-      ineligibleLending
-      ineligiblePyramid
-      ineligibleGambling
-      ineligibleIllegal
       forProfit
       us
       businessEmail
@@ -234,27 +172,14 @@ export const onDeleteForm = /* GraphQL */ `
     onDeleteForm {
       id
       userId
+      authorizedSignatoryUserId
       formId
       sopVersion
       loanAmount
       screenId
       screenNavigation
       percentComplete
-      restricted
-      restrictedSpeculative
-      restrictedCoins
-      restrictedLending
-      restrictedPackaging
-      restrictedPyramid
-      restrictedIllegal
-      restrictedGambling
       ineligible
-      ineligibleNonProfit
-      ineligibleRealestate
-      ineligibleLending
-      ineligiblePyramid
-      ineligibleGambling
-      ineligibleIllegal
       forProfit
       us
       businessEmail
@@ -278,69 +203,6 @@ export const onDeleteForm = /* GraphQL */ `
       nacis
       agreeLexisNexis
       fullOwner
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateScreen = /* GraphQL */ `
-  subscription OnCreateScreen {
-    onCreateScreen {
-      id
-      formId
-      sopVersion
-      userType
-      percentComplete
-      stage
-      stageHeader
-      stageText
-      stagePercentComplete
-      step
-      stepHeader
-      stepText
-      stepPercentComplete
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateScreen = /* GraphQL */ `
-  subscription OnUpdateScreen {
-    onUpdateScreen {
-      id
-      formId
-      sopVersion
-      userType
-      percentComplete
-      stage
-      stageHeader
-      stageText
-      stagePercentComplete
-      step
-      stepHeader
-      stepText
-      stepPercentComplete
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteScreen = /* GraphQL */ `
-  subscription OnDeleteScreen {
-    onDeleteScreen {
-      id
-      formId
-      sopVersion
-      userType
-      percentComplete
-      stage
-      stageHeader
-      stageText
-      stagePercentComplete
-      step
-      stepHeader
-      stepText
-      stepPercentComplete
       createdAt
       updatedAt
     }
@@ -407,6 +269,9 @@ export const onCreateNotification = /* GraphQL */ `
   subscription OnCreateNotification {
     onCreateNotification {
       id
+      sendEmail
+      sendSMS
+      private
       fromUserId
       toUserId
       fromEmail
@@ -437,6 +302,9 @@ export const onUpdateNotification = /* GraphQL */ `
   subscription OnUpdateNotification {
     onUpdateNotification {
       id
+      sendEmail
+      sendSMS
+      private
       fromUserId
       toUserId
       fromEmail
@@ -467,6 +335,9 @@ export const onDeleteNotification = /* GraphQL */ `
   subscription OnDeleteNotification {
     onDeleteNotification {
       id
+      sendEmail
+      sendSMS
+      private
       fromUserId
       toUserId
       fromEmail

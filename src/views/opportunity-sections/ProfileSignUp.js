@@ -1,20 +1,10 @@
 import React, {useState} from "react";
 import { useHistory } from "react-router-dom";
 
-/* Import the Amplify Auth API */
-import { Auth } from 'aws-amplify';
-
-//AWS Amplify GraphQL libraries
-import { API } from 'aws-amplify';
-import { 
-    createUser as createUserMutation, 
-    createForm as createFormMutation,
-} from '../../graphql/mutations';
-
 // redux store
-import { useDispatch } from 'react-redux';
+import { useDispatch, connect } from 'react-redux';
 import {
-  updateForm,  
+  updateSignUpProfile,
 } from 'features/form/formSlice'
 import {
     createNotificationAsync,  
@@ -35,119 +25,27 @@ import {
   Modal,
 } from "reactstrap";
 
-// core components
-import Buttons from "../opportunity-sections/Buttons";
+const mapStateToProps = (state) => {
+    //console.log('mapStateToProps - state.form', state.form)
+    return {
+        signUpProfile: {
+            userId: state.form.userId,
+            password: state.form.password,
+            authorizedSignatoryUserId: state.form.setAuthorizedSigantoryId,
+        }        
+    };
+  };
 
-function ProfileSignUp(prop) {
+function ProfileSignUp(props) {
     const history = useHistory()
     const dispatch = useDispatch()
     
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [emailState, setEmailState] = useState("");
-    const [passwordState, setPasswordState] = useState("");
-    const [password2State, setPassword2State] = useState("");
-    const [authorizedSignatory, setAuthorizedSigantory] = useState(true);
-    const [userExists, setUserExists] = useState(false);
-    const [agreeSevenAware, setAgreeSevenAware] = useState(false);
-
-    //const thisScreenId = "Profile>SignUp"
-    let percentComplete = "0"                        
-
-    async function handleNextClick() {   
-        //validation
-        if (emailState !== "success") {return false}
-        if (passwordState !== "success") {return false}
-        if (password2State !== "success") {return false}
-        if (!agreeSevenAware) {return false}
-
-        //amplify auth sign up
-        try {
-            const { user } = await Auth.signUp({
-                username: email,
-                password: password,
-                attributes: {
-                    email: email,
-                    'custom:userType': 'Borrower'
-                }});
-            /* Once the user successfully signs up, update form state to show the confirm sign up form for MFA */
-            //create the user record
-            createNewUserAndForm(user.username)
-        } catch (err) { 
-            console.log({ err })
-            setUserExists(true)
-        }
-
-    };
-
-    //save the new user and form
-    async function createNewUserAndForm(newUserName) {
-        //create the new user
-        await API.graphql(
-        { query: createUserMutation, 
-            variables: { 
-                input: {                    
-                    userId: newUserName,
-                    userType: "Borrower",
-                    email: email,
-                    sevenAwareAgree: true,
-                } 
-            } 
-        }
-        )
-        //const newUserId = apiUserData.data.createUser.id
-        //console.log('newUserAndForm - newUserId', newUserId)
-        
-        const newFormData = {   
-            userId: newUserName,
-            screenNavigation: "Profile>", 
-            percentComplete: 0,
-            loanAmount: 0,           
-            restricted: false,
-            restrictedSpeculative: false,
-            restrictedCoins: false,
-            restrictedLending: false,
-            restrictedPackaging: false,
-            restrictedPyramid: false,
-            restrictedIllegal: false,
-            restrictedGambling: false,
-            ineligible: false,
-            ineligibleNonProfit: false,
-            ineligibleRealestate: false,
-            ineligibleLending: false,
-            ineligiblePyramid: false,
-            ineligibleGambling: false,
-            ineligibleIllegal: false,
-            forProfit: true,
-            us: true,
-            businessEmail: email,
-        }    
-
-        //create the new form for this user
-        await API.graphql(
-            { query: createFormMutation, 
-                variables: { input: newFormData } 
-            }
-        )
-
-        //update the local form store 
-        const newForm = { 
-            ...prop.form, 
-            businessEmail: email,
-        }
-
-        //update redux & graphql
-        dispatch(updateForm(newForm))                           
-
-         //go to the next step, stage, or form
-         history.replace("/verify")    
-    };
-
-    const handleBackClick = () => {
-        let screenNavigation = Object.assign([], prop.navigation);
-        screenNavigation.pop()
-        prop.nextForm(null, screenNavigation)
-    }
+    const [emailState, setEmailState] = useState("")
+    const [passwordState, setPasswordState] = useState("")
+    const [password2State, setPassword2State] = useState("")
+    const [authorizedSignatory, setAuthorizedSigantory] = useState(false); 
+    const [authorizedSignatoryUserIdState, setauthorizedSignatoryUserIdState] = useState("")
+    const [agreeSevenAware, setAgreeSevenAware] = useState(false)      
 
     // function that returns true if value is email, false otherwise
     const verifyEmail = value => {        
@@ -158,8 +56,7 @@ function ProfileSignUp(prop) {
         return false;
     };
 
-    const verifyPassword = value => {
-        
+    const verifyPassword = value => {      
         var passwordRex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-“!@#%&/,><’:;|_~`])\S{8,99}$/
         //console.log('verifyPassword - passwordRex.test(' + value + ')', passwordRex.test(value))
         if (passwordRex.test(value) && value.length > 0) {
@@ -168,30 +65,53 @@ function ProfileSignUp(prop) {
         return false;
     };
 
-    const verifyPassword2 = value => {        
-        if (value === password) {
+    const verifyPasswordMatch = value => {        
+        if (value === props.signUpProfile.password) {
         return true;
         }
         return false;
     };
+
+    function handleChange(e) {
+        const { id, value } = e.currentTarget;         
+        const newSignUpProfile = {...props.signUpProfile, [id]: value}
+
+        //update redux                      
+        dispatch(updateSignUpProfile({
+            userId: newSignUpProfile.userId,
+            password: newSignUpProfile.password,
+            authorizedSignatoryUserId: newSignUpProfile.authorizedSignatoryUserId,
+        })) 
+    }
+
+    function resetAuthorizedSignatory() {        
+        //update redux                   
+        const newSignUpProfile = {...props.signUpProfile, authorizedSignatoryUserId: ""}   
+        dispatch(updateSignUpProfile({
+            userId: newSignUpProfile.userId,
+            password: newSignUpProfile.password,
+            authorizedSignatoryUserId: "",
+        })) 
+    }
 
   return (
     <Form className="settings-form">     
                 <Row>
                 <Col className="ml-auto mr-auto h5" md="10">
                 <FormGroup className={emailState === "success" ? "has-success" : null}>
-                <Label for="businessEmail" className="control-label">Email Address (User ID)</Label>
+                <Label for="userId" className="control-label">Email Address (User ID)</Label>
                 <Input 
                 type="text" 
-                name="businessEmail" 
-                id="businessEmail" 
+                name="userId" 
+                id="userId" 
+                defaultValue={props.signUpProfile.userId}
                 onChange = {event => {
                     if (verifyEmail(event.target.value)) {
                         setEmailState("success");
                     } else {
                         setEmailState("error");
                     }
-                    setEmail(event.target.value);
+                    handleChange(event)
                     }}
                 />                       
             </FormGroup> 
@@ -211,7 +131,7 @@ function ProfileSignUp(prop) {
                     } else {
                         setPasswordState("error");
                     }
-                    setPassword(event.target.value);
+                    handleChange(event)
                     }}
                 />    
             </FormGroup>
@@ -225,7 +145,7 @@ function ProfileSignUp(prop) {
                 id="password2"
                 autoComplete="off"
                 onChange = {event => {
-                    if (verifyPassword2(event.target.value)) {
+                    if (verifyPasswordMatch(event.target.value)) {
                         setPassword2State("success");
                     } else {
                         setPassword2State("error");
@@ -237,64 +157,64 @@ function ProfileSignUp(prop) {
             </Col>
             </Row>
 
-                <FormGroup check>
-                    <Label check>
-                    <Input 
-                        id="agreeSevenAware"
-                        type="checkbox" 
-                        defaultChecked={agreeSevenAware}     
-                        onClick={() => setAgreeSevenAware(!agreeSevenAware)}
-                    />{' '}
-                        <small>I understand how 7(a)ware will use and protect my data. And I agree to the terms & conditions.
-                        <span className="form-check-sign">
-                            <span className="check"></span>
-                        </span>
-                        </small>
-                    </Label>
-                </FormGroup>
+                
 
-                {authorizedSignatory ? (
-                    <FormGroup>
-                <FormText>
-                We recommend an equity owner that is an authorized person create the account. <a href="#" onClick={() => setAuthorizedSigantory(false)}>
-                Click here</a> to add someone else authorizied signatory.
-                </FormText>     
-                </FormGroup> 
-                ) : (
+                {!authorizedSignatory && (
                     <FormGroup>
                 <FormText>
                 We recommend an equity owner that is an authorized person create the account. <a href="#" onClick={() => setAuthorizedSigantory(true)}>
-                Click here</a> to set yourself as the authorized signatory.
+                Click here</a> to add someone else authorizied signatory.
                 </FormText>     
                 </FormGroup> 
                 )}                    
                 <br/>                
                 
 
-                {!authorizedSignatory && (
-                    <FormGroup className={emailState === "success" ? "has-success" : null}>
-                <Label for="businessEmail" className="control-label">Email Address (User ID)</Label>
+                {authorizedSignatory && (
+                    <FormGroup className={authorizedSignatoryUserIdState === "success" ? "has-success" : null}>
+                <Label for="authorizedSignatoryUserId" className="control-label">Email Address (Authorized Signatory)</Label>
                 <Input 
                 type="text" 
-                name="businessEmail" 
-                id="businessEmail" 
+                name="authorizedSignatoryUserId" 
+                id="authorizedSignatoryUserId" 
+                defaultValue={props.signUpProfile.authorizedSignatoryUserId}
                 onChange = {event => {
                     if (verifyEmail(event.target.value)) {
-                        setEmailState("success");
+                        setauthorizedSignatoryUserIdState("success");
                     } else {
-                        setEmailState("error");
+                        setauthorizedSignatoryUserIdState("error");
                     }
-                    setEmail(event.target.value);
+                    handleChange(event)
                     }}
-                />                       
+                />             
+                <FormText>
+                We'll invite this user to create a profile and digitally sign the necessary documentation. <a href="#" onClick={() => {
+                    setAuthorizedSigantory(false)
+                    resetAuthorizedSignatory()
+                }}>
+                Click here</a> if you should be the authorizied signatory for this business.
+                </FormText>           
             </FormGroup> 
+            
                 )}
+<br />
+<FormGroup check>
+                    <Label check>
+                    <Input 
+                        id="noFein"
+                        type="checkbox" 
+                        defaultChecked={agreeSevenAware}     
+                        onClick={() => setAgreeSevenAware(!agreeSevenAware)}
+                    />{' '}I understand how 7(a)ware will use my information and keep it secure.
+                        <span className="form-check-sign">
+                            <span className="check"></span>
+                        </span>
+                    </Label>
+                </FormGroup> 
 
                 </Col>
                 </Row>     
                 
-
-
                    
                 
             </Form>
@@ -302,4 +222,4 @@ function ProfileSignUp(prop) {
   );
 }
 
-export default ProfileSignUp;
+export default connect(mapStateToProps)(ProfileSignUp)

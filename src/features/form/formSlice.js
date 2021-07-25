@@ -9,6 +9,8 @@ export const formSlice = createSlice({
   initialState: {      
     id: "",
     userId: "",
+    password: "",
+    authorizedSignatoryUserId: "",
     screenId: "",
     screenNavigation: "", 
     percentComplete: 0,
@@ -30,6 +32,7 @@ export const formSlice = createSlice({
     businessTin: "",
     businessTinType: "",
     businessName: "",
+    businessEmail: "",
     dba: "",
     usesDba: false,
     businessAddressId: "",
@@ -42,6 +45,7 @@ export const formSlice = createSlice({
       console.log('updateForm: action', action)
       state.id = action.payload.id
       state.userId = action.payload.userId
+      state.authorizedSignatoryUserId = action.payload.authorizedSignatoryUserId      
       state.screenId = action.payload.screenId
       state.screenNavigation = action.payload.screenNavigation
       state.percentComplete = action.payload.percentComplete 
@@ -82,6 +86,21 @@ export const formSlice = createSlice({
     updateUS: (state, action) => {
       state.us = action.payload.us
     },
+    updateSignUpProfile: (state, action) => {
+      state.userId = action.payload.userId
+      state.password = action.payload.password
+      state.authorizedSignatoryUserId = action.payload.authorizedSignatoryUserId 
+    },
+    updateNewForm: (state, action) => {
+      state.id = action.payload.id
+      state.userId = action.payload.userId
+      state.authorizedSignatoryUserId = action.payload.authorizedSignatoryUserId      
+      state.screenNavigation = action.payload.screenNavigation
+      state.ineligible = action.payload.ineligible
+      state.forProfit = action.payload.forProfit
+      state.us = action.payload.us
+      state.businessEmail = action.payload.businessEmail      
+    },
   },
 });
 
@@ -90,6 +109,8 @@ export const {
   updateIneligible,
   updateForProfit,
   updateUS,
+  updateSignUpProfile,
+  updateNewForm,
 } = formSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -104,6 +125,7 @@ export const updateFormAsync = form => dispatch => {
         input: {
           id: form.id,
           userId: form.userId, 
+          authorizedSignatoryUserId: form.authorizedSignatoryUserId, 
           screenId: form.screenId,
           screenNavigation: form.screenNavigation,
           loanAmount: form.loanAmount,

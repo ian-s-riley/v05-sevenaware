@@ -27,7 +27,7 @@
         "IdentityPoolName": "testAuthIdentityPool__staging",
         "UserPoolName": "v05sevenaware"
       },
-      "lastPushTimeStamp": "2021-07-22T02:16:57.639Z",
+      "lastPushTimeStamp": "2021-07-25T21:26:54.502Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifydc198c4383344-staging-162254-deployment/amplify-cfn-templates/auth/v05sevenaware-cloudformation-template.yml",
         "logicalId": "authv05sevenaware"
@@ -44,10 +44,17 @@
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 365,
-              "description": "v05sevenaware-apikey"
+              "description": "v05-sevenaware-apikey"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authv05sevenaware"
+              }
+            }
+          ]
         },
         "GraphQLAPIIdOutput": "3e3o5xcmerelnikxhysqesgh6i",
         "GraphQLAPIEndpointOutput": "https://24qbov3tabhthnovpm4qlvizsq.appsync-api.us-east-1.amazonaws.com/graphql",
@@ -57,8 +64,8 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifydc198c4383344-staging-162254-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiv05sevenaware"
       },
-      "lastPushTimeStamp": "2021-07-22T02:17:00.445Z",
-      "lastPushDirHash": "Zt2I9sxWmkGrrmraRq0hekdYdkA="
+      "lastPushTimeStamp": "2021-07-25T21:26:58.845Z",
+      "lastPushDirHash": "9mWAeYEvf3s5sdu7+kGm74DkhrE="
     }
   },
   "storage": {}

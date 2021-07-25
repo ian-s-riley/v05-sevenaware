@@ -1,35 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getTodo = /* GraphQL */ `
-  query GetTodo($id: ID!) {
-    getTodo(id: $id) {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listTodos = /* GraphQL */ `
-  query ListTodos(
-    $filter: ModelTodoFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
@@ -53,7 +24,6 @@ export const getUser = /* GraphQL */ `
       idType
       percentOwner
       sevenAwareAgree
-      status
       createdAt
       updatedAt
     }
@@ -87,7 +57,6 @@ export const listUsers = /* GraphQL */ `
         idType
         percentOwner
         sevenAwareAgree
-        status
         createdAt
         updatedAt
       }
@@ -100,27 +69,14 @@ export const getForm = /* GraphQL */ `
     getForm(id: $id) {
       id
       userId
+      authorizedSignatoryUserId
       formId
       sopVersion
       loanAmount
       screenId
       screenNavigation
       percentComplete
-      restricted
-      restrictedSpeculative
-      restrictedCoins
-      restrictedLending
-      restrictedPackaging
-      restrictedPyramid
-      restrictedIllegal
-      restrictedGambling
       ineligible
-      ineligibleNonProfit
-      ineligibleRealestate
-      ineligibleLending
-      ineligiblePyramid
-      ineligibleGambling
-      ineligibleIllegal
       forProfit
       us
       businessEmail
@@ -159,27 +115,14 @@ export const listForms = /* GraphQL */ `
       items {
         id
         userId
+        authorizedSignatoryUserId
         formId
         sopVersion
         loanAmount
         screenId
         screenNavigation
         percentComplete
-        restricted
-        restrictedSpeculative
-        restrictedCoins
-        restrictedLending
-        restrictedPackaging
-        restrictedPyramid
-        restrictedIllegal
-        restrictedGambling
         ineligible
-        ineligibleNonProfit
-        ineligibleRealestate
-        ineligibleLending
-        ineligiblePyramid
-        ineligibleGambling
-        ineligibleIllegal
         forProfit
         us
         businessEmail
@@ -203,55 +146,6 @@ export const listForms = /* GraphQL */ `
         nacis
         agreeLexisNexis
         fullOwner
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getScreen = /* GraphQL */ `
-  query GetScreen($id: ID!) {
-    getScreen(id: $id) {
-      id
-      formId
-      sopVersion
-      userType
-      percentComplete
-      stage
-      stageHeader
-      stageText
-      stagePercentComplete
-      step
-      stepHeader
-      stepText
-      stepPercentComplete
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listScreens = /* GraphQL */ `
-  query ListScreens(
-    $filter: ModelScreenFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listScreens(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        formId
-        sopVersion
-        userType
-        percentComplete
-        stage
-        stageHeader
-        stageText
-        stagePercentComplete
-        step
-        stepHeader
-        stepText
-        stepPercentComplete
         createdAt
         updatedAt
       }
@@ -308,6 +202,9 @@ export const getNotification = /* GraphQL */ `
   query GetNotification($id: ID!) {
     getNotification(id: $id) {
       id
+      sendEmail
+      sendSMS
+      private
       fromUserId
       toUserId
       fromEmail
@@ -343,6 +240,9 @@ export const listNotifications = /* GraphQL */ `
     listNotifications(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        sendEmail
+        sendSMS
+        private
         fromUserId
         toUserId
         fromEmail

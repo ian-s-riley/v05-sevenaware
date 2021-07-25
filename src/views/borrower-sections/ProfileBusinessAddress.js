@@ -15,7 +15,7 @@ import {
 } from 'features/form/formSlice'
 import {
     updateAddressAsync
-  } from 'features/form/addressSlice'
+  } from 'features/address/addressSlice'
 
 // react plugin used to create DropdownMenu for selecting items
 import Select from "react-select";  

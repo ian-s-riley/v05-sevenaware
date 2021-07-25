@@ -1,8 +1,3 @@
-type Todo @model {
-  id: ID!
-  name: String!
-  description: String
-}
 type User @model {
   id: ID!
   userId: String
@@ -24,33 +19,19 @@ type User @model {
   idType: String
   percentOwner: Float
   sevenAwareAgree: Boolean
-  status: String
 }
 
 type Form @model {
   id: ID!
   userId: String
+  authorizedSignatoryUserId: String
   formId: String
   sopVersion: String
   loanAmount: Float
   screenId: String
   screenNavigation: String
   percentComplete: Int
-  restricted: Boolean
-  restrictedSpeculative: Boolean
-  restrictedCoins: Boolean
-  restrictedLending: Boolean
-  restrictedPackaging: Boolean
-  restrictedPyramid: Boolean
-  restrictedIllegal: Boolean
-  restrictedGambling: Boolean
   ineligible: Boolean
-  ineligibleNonProfit: Boolean
-  ineligibleRealestate: Boolean
-  ineligibleLending: Boolean
-  ineligiblePyramid: Boolean
-  ineligibleGambling: Boolean
-  ineligibleIllegal: Boolean
   forProfit: Boolean
   us: Boolean
   businessEmail: Boolean
@@ -76,22 +57,6 @@ type Form @model {
   fullOwner: Boolean
 }
 
-type Screen @model {
-  id: ID!
-  formId: String
-  sopVersion: String
-  userType: String
-  percentComplete: Int
-  stage: String
-  stageHeader: String
-  stageText: String
-  stagePercentComplete: Int
-  step: String
-  stepHeader: String
-  stepText: String
-  stepPercentComplete: Int
-}
-
 type Address @model {
   id: ID!
   userId: String  
@@ -108,6 +73,9 @@ type Address @model {
 
 type Notification @model {
   id: ID!
+  sendEmail: Boolean
+  sendSMS: Boolean
+  private: Boolean
   fromUserId: String!
   toUserId: String!
   fromEmail: String

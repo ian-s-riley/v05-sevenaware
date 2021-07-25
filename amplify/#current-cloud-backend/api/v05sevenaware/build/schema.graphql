@@ -1,11 +1,3 @@
-type Todo {
-  id: ID!
-  name: String!
-  description: String
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-}
-
 type User {
   id: ID!
   userId: String
@@ -27,7 +19,6 @@ type User {
   idType: String
   percentOwner: Float
   sevenAwareAgree: Boolean
-  status: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -35,27 +26,14 @@ type User {
 type Form {
   id: ID!
   userId: String
+  authorizedSignatoryUserId: String
   formId: String
   sopVersion: String
   loanAmount: Float
   screenId: String
   screenNavigation: String
   percentComplete: Int
-  restricted: Boolean
-  restrictedSpeculative: Boolean
-  restrictedCoins: Boolean
-  restrictedLending: Boolean
-  restrictedPackaging: Boolean
-  restrictedPyramid: Boolean
-  restrictedIllegal: Boolean
-  restrictedGambling: Boolean
   ineligible: Boolean
-  ineligibleNonProfit: Boolean
-  ineligibleRealestate: Boolean
-  ineligibleLending: Boolean
-  ineligiblePyramid: Boolean
-  ineligibleGambling: Boolean
-  ineligibleIllegal: Boolean
   forProfit: Boolean
   us: Boolean
   businessEmail: Boolean
@@ -83,24 +61,6 @@ type Form {
   updatedAt: AWSDateTime!
 }
 
-type Screen {
-  id: ID!
-  formId: String
-  sopVersion: String
-  userType: String
-  percentComplete: Int
-  stage: String
-  stageHeader: String
-  stageText: String
-  stagePercentComplete: Int
-  step: String
-  stepHeader: String
-  stepText: String
-  stepPercentComplete: Int
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-}
-
 type Address {
   id: ID!
   userId: String
@@ -119,6 +79,9 @@ type Address {
 
 type Notification {
   id: ID!
+  sendEmail: Boolean
+  sendSMS: Boolean
+  private: Boolean
   fromUserId: String!
   toUserId: String!
   fromEmail: String
@@ -149,8 +112,8 @@ enum ModelSortDirection {
   DESC
 }
 
-type ModelTodoConnection {
-  items: [Todo]
+type ModelUserConnection {
+  items: [User]
   nextToken: String
 }
 
@@ -227,114 +190,6 @@ input ModelSizeInput {
   between: [Int]
 }
 
-input ModelTodoFilterInput {
-  id: ModelIDInput
-  name: ModelStringInput
-  description: ModelStringInput
-  and: [ModelTodoFilterInput]
-  or: [ModelTodoFilterInput]
-  not: ModelTodoFilterInput
-}
-
-enum ModelAttributeTypes {
-  binary
-  binarySet
-  bool
-  list
-  map
-  number
-  numberSet
-  string
-  stringSet
-  _null
-}
-
-type Query {
-  getTodo(id: ID!): Todo
-  listTodos(filter: ModelTodoFilterInput, limit: Int, nextToken: String): ModelTodoConnection
-  getUser(id: ID!): User
-  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
-  getForm(id: ID!): Form
-  listForms(filter: ModelFormFilterInput, limit: Int, nextToken: String): ModelFormConnection
-  getScreen(id: ID!): Screen
-  listScreens(filter: ModelScreenFilterInput, limit: Int, nextToken: String): ModelScreenConnection
-  getAddress(id: ID!): Address
-  listAddresses(filter: ModelAddressFilterInput, limit: Int, nextToken: String): ModelAddressConnection
-  getNotification(id: ID!): Notification
-  listNotifications(filter: ModelNotificationFilterInput, limit: Int, nextToken: String): ModelNotificationConnection
-}
-
-input CreateTodoInput {
-  id: ID
-  name: String!
-  description: String
-}
-
-input UpdateTodoInput {
-  id: ID!
-  name: String
-  description: String
-}
-
-input DeleteTodoInput {
-  id: ID!
-}
-
-type Mutation {
-  createTodo(input: CreateTodoInput!, condition: ModelTodoConditionInput): Todo
-  updateTodo(input: UpdateTodoInput!, condition: ModelTodoConditionInput): Todo
-  deleteTodo(input: DeleteTodoInput!, condition: ModelTodoConditionInput): Todo
-  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
-  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
-  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
-  createForm(input: CreateFormInput!, condition: ModelFormConditionInput): Form
-  updateForm(input: UpdateFormInput!, condition: ModelFormConditionInput): Form
-  deleteForm(input: DeleteFormInput!, condition: ModelFormConditionInput): Form
-  createScreen(input: CreateScreenInput!, condition: ModelScreenConditionInput): Screen
-  updateScreen(input: UpdateScreenInput!, condition: ModelScreenConditionInput): Screen
-  deleteScreen(input: DeleteScreenInput!, condition: ModelScreenConditionInput): Screen
-  createAddress(input: CreateAddressInput!, condition: ModelAddressConditionInput): Address
-  updateAddress(input: UpdateAddressInput!, condition: ModelAddressConditionInput): Address
-  deleteAddress(input: DeleteAddressInput!, condition: ModelAddressConditionInput): Address
-  createNotification(input: CreateNotificationInput!, condition: ModelNotificationConditionInput): Notification
-  updateNotification(input: UpdateNotificationInput!, condition: ModelNotificationConditionInput): Notification
-  deleteNotification(input: DeleteNotificationInput!, condition: ModelNotificationConditionInput): Notification
-}
-
-input ModelTodoConditionInput {
-  name: ModelStringInput
-  description: ModelStringInput
-  and: [ModelTodoConditionInput]
-  or: [ModelTodoConditionInput]
-  not: ModelTodoConditionInput
-}
-
-type Subscription {
-  onCreateTodo: Todo @aws_subscribe(mutations: ["createTodo"])
-  onUpdateTodo: Todo @aws_subscribe(mutations: ["updateTodo"])
-  onDeleteTodo: Todo @aws_subscribe(mutations: ["deleteTodo"])
-  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
-  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
-  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
-  onCreateForm: Form @aws_subscribe(mutations: ["createForm"])
-  onUpdateForm: Form @aws_subscribe(mutations: ["updateForm"])
-  onDeleteForm: Form @aws_subscribe(mutations: ["deleteForm"])
-  onCreateScreen: Screen @aws_subscribe(mutations: ["createScreen"])
-  onUpdateScreen: Screen @aws_subscribe(mutations: ["updateScreen"])
-  onDeleteScreen: Screen @aws_subscribe(mutations: ["deleteScreen"])
-  onCreateAddress: Address @aws_subscribe(mutations: ["createAddress"])
-  onUpdateAddress: Address @aws_subscribe(mutations: ["updateAddress"])
-  onDeleteAddress: Address @aws_subscribe(mutations: ["deleteAddress"])
-  onCreateNotification: Notification @aws_subscribe(mutations: ["createNotification"])
-  onUpdateNotification: Notification @aws_subscribe(mutations: ["updateNotification"])
-  onDeleteNotification: Notification @aws_subscribe(mutations: ["deleteNotification"])
-}
-
-type ModelUserConnection {
-  items: [User]
-  nextToken: String
-}
-
 input ModelUserFilterInput {
   id: ModelIDInput
   userId: ModelStringInput
@@ -356,10 +211,33 @@ input ModelUserFilterInput {
   idType: ModelStringInput
   percentOwner: ModelFloatInput
   sevenAwareAgree: ModelBooleanInput
-  status: ModelStringInput
   and: [ModelUserFilterInput]
   or: [ModelUserFilterInput]
   not: ModelUserFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Query {
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  getForm(id: ID!): Form
+  listForms(filter: ModelFormFilterInput, limit: Int, nextToken: String): ModelFormConnection
+  getAddress(id: ID!): Address
+  listAddresses(filter: ModelAddressFilterInput, limit: Int, nextToken: String): ModelAddressConnection
+  getNotification(id: ID!): Notification
+  listNotifications(filter: ModelNotificationFilterInput, limit: Int, nextToken: String): ModelNotificationConnection
 }
 
 input CreateUserInput {
@@ -383,7 +261,6 @@ input CreateUserInput {
   idType: String
   percentOwner: Float
   sevenAwareAgree: Boolean
-  status: String
 }
 
 input UpdateUserInput {
@@ -407,11 +284,25 @@ input UpdateUserInput {
   idType: String
   percentOwner: Float
   sevenAwareAgree: Boolean
-  status: String
 }
 
 input DeleteUserInput {
   id: ID!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+  createForm(input: CreateFormInput!, condition: ModelFormConditionInput): Form
+  updateForm(input: UpdateFormInput!, condition: ModelFormConditionInput): Form
+  deleteForm(input: DeleteFormInput!, condition: ModelFormConditionInput): Form
+  createAddress(input: CreateAddressInput!, condition: ModelAddressConditionInput): Address
+  updateAddress(input: UpdateAddressInput!, condition: ModelAddressConditionInput): Address
+  deleteAddress(input: DeleteAddressInput!, condition: ModelAddressConditionInput): Address
+  createNotification(input: CreateNotificationInput!, condition: ModelNotificationConditionInput): Notification
+  updateNotification(input: UpdateNotificationInput!, condition: ModelNotificationConditionInput): Notification
+  deleteNotification(input: DeleteNotificationInput!, condition: ModelNotificationConditionInput): Notification
 }
 
 input ModelUserConditionInput {
@@ -434,10 +325,24 @@ input ModelUserConditionInput {
   idType: ModelStringInput
   percentOwner: ModelFloatInput
   sevenAwareAgree: ModelBooleanInput
-  status: ModelStringInput
   and: [ModelUserConditionInput]
   or: [ModelUserConditionInput]
   not: ModelUserConditionInput
+}
+
+type Subscription {
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
+  onCreateForm: Form @aws_subscribe(mutations: ["createForm"])
+  onUpdateForm: Form @aws_subscribe(mutations: ["updateForm"])
+  onDeleteForm: Form @aws_subscribe(mutations: ["deleteForm"])
+  onCreateAddress: Address @aws_subscribe(mutations: ["createAddress"])
+  onUpdateAddress: Address @aws_subscribe(mutations: ["updateAddress"])
+  onDeleteAddress: Address @aws_subscribe(mutations: ["deleteAddress"])
+  onCreateNotification: Notification @aws_subscribe(mutations: ["createNotification"])
+  onUpdateNotification: Notification @aws_subscribe(mutations: ["updateNotification"])
+  onDeleteNotification: Notification @aws_subscribe(mutations: ["deleteNotification"])
 }
 
 type ModelFormConnection {
@@ -448,27 +353,14 @@ type ModelFormConnection {
 input ModelFormFilterInput {
   id: ModelIDInput
   userId: ModelStringInput
+  authorizedSignatoryUserId: ModelStringInput
   formId: ModelStringInput
   sopVersion: ModelStringInput
   loanAmount: ModelFloatInput
   screenId: ModelStringInput
   screenNavigation: ModelStringInput
   percentComplete: ModelIntInput
-  restricted: ModelBooleanInput
-  restrictedSpeculative: ModelBooleanInput
-  restrictedCoins: ModelBooleanInput
-  restrictedLending: ModelBooleanInput
-  restrictedPackaging: ModelBooleanInput
-  restrictedPyramid: ModelBooleanInput
-  restrictedIllegal: ModelBooleanInput
-  restrictedGambling: ModelBooleanInput
   ineligible: ModelBooleanInput
-  ineligibleNonProfit: ModelBooleanInput
-  ineligibleRealestate: ModelBooleanInput
-  ineligibleLending: ModelBooleanInput
-  ineligiblePyramid: ModelBooleanInput
-  ineligibleGambling: ModelBooleanInput
-  ineligibleIllegal: ModelBooleanInput
   forProfit: ModelBooleanInput
   us: ModelBooleanInput
   businessEmail: ModelBooleanInput
@@ -500,27 +392,14 @@ input ModelFormFilterInput {
 input CreateFormInput {
   id: ID
   userId: String
+  authorizedSignatoryUserId: String
   formId: String
   sopVersion: String
   loanAmount: Float
   screenId: String
   screenNavigation: String
   percentComplete: Int
-  restricted: Boolean
-  restrictedSpeculative: Boolean
-  restrictedCoins: Boolean
-  restrictedLending: Boolean
-  restrictedPackaging: Boolean
-  restrictedPyramid: Boolean
-  restrictedIllegal: Boolean
-  restrictedGambling: Boolean
   ineligible: Boolean
-  ineligibleNonProfit: Boolean
-  ineligibleRealestate: Boolean
-  ineligibleLending: Boolean
-  ineligiblePyramid: Boolean
-  ineligibleGambling: Boolean
-  ineligibleIllegal: Boolean
   forProfit: Boolean
   us: Boolean
   businessEmail: Boolean
@@ -549,27 +428,14 @@ input CreateFormInput {
 input UpdateFormInput {
   id: ID!
   userId: String
+  authorizedSignatoryUserId: String
   formId: String
   sopVersion: String
   loanAmount: Float
   screenId: String
   screenNavigation: String
   percentComplete: Int
-  restricted: Boolean
-  restrictedSpeculative: Boolean
-  restrictedCoins: Boolean
-  restrictedLending: Boolean
-  restrictedPackaging: Boolean
-  restrictedPyramid: Boolean
-  restrictedIllegal: Boolean
-  restrictedGambling: Boolean
   ineligible: Boolean
-  ineligibleNonProfit: Boolean
-  ineligibleRealestate: Boolean
-  ineligibleLending: Boolean
-  ineligiblePyramid: Boolean
-  ineligibleGambling: Boolean
-  ineligibleIllegal: Boolean
   forProfit: Boolean
   us: Boolean
   businessEmail: Boolean
@@ -601,27 +467,14 @@ input DeleteFormInput {
 
 input ModelFormConditionInput {
   userId: ModelStringInput
+  authorizedSignatoryUserId: ModelStringInput
   formId: ModelStringInput
   sopVersion: ModelStringInput
   loanAmount: ModelFloatInput
   screenId: ModelStringInput
   screenNavigation: ModelStringInput
   percentComplete: ModelIntInput
-  restricted: ModelBooleanInput
-  restrictedSpeculative: ModelBooleanInput
-  restrictedCoins: ModelBooleanInput
-  restrictedLending: ModelBooleanInput
-  restrictedPackaging: ModelBooleanInput
-  restrictedPyramid: ModelBooleanInput
-  restrictedIllegal: ModelBooleanInput
-  restrictedGambling: ModelBooleanInput
   ineligible: ModelBooleanInput
-  ineligibleNonProfit: ModelBooleanInput
-  ineligibleRealestate: ModelBooleanInput
-  ineligibleLending: ModelBooleanInput
-  ineligiblePyramid: ModelBooleanInput
-  ineligibleGambling: ModelBooleanInput
-  ineligibleIllegal: ModelBooleanInput
   forProfit: ModelBooleanInput
   us: ModelBooleanInput
   businessEmail: ModelBooleanInput
@@ -648,84 +501,6 @@ input ModelFormConditionInput {
   and: [ModelFormConditionInput]
   or: [ModelFormConditionInput]
   not: ModelFormConditionInput
-}
-
-type ModelScreenConnection {
-  items: [Screen]
-  nextToken: String
-}
-
-input ModelScreenFilterInput {
-  id: ModelIDInput
-  formId: ModelStringInput
-  sopVersion: ModelStringInput
-  userType: ModelStringInput
-  percentComplete: ModelIntInput
-  stage: ModelStringInput
-  stageHeader: ModelStringInput
-  stageText: ModelStringInput
-  stagePercentComplete: ModelIntInput
-  step: ModelStringInput
-  stepHeader: ModelStringInput
-  stepText: ModelStringInput
-  stepPercentComplete: ModelIntInput
-  and: [ModelScreenFilterInput]
-  or: [ModelScreenFilterInput]
-  not: ModelScreenFilterInput
-}
-
-input CreateScreenInput {
-  id: ID
-  formId: String
-  sopVersion: String
-  userType: String
-  percentComplete: Int
-  stage: String
-  stageHeader: String
-  stageText: String
-  stagePercentComplete: Int
-  step: String
-  stepHeader: String
-  stepText: String
-  stepPercentComplete: Int
-}
-
-input UpdateScreenInput {
-  id: ID!
-  formId: String
-  sopVersion: String
-  userType: String
-  percentComplete: Int
-  stage: String
-  stageHeader: String
-  stageText: String
-  stagePercentComplete: Int
-  step: String
-  stepHeader: String
-  stepText: String
-  stepPercentComplete: Int
-}
-
-input DeleteScreenInput {
-  id: ID!
-}
-
-input ModelScreenConditionInput {
-  formId: ModelStringInput
-  sopVersion: ModelStringInput
-  userType: ModelStringInput
-  percentComplete: ModelIntInput
-  stage: ModelStringInput
-  stageHeader: ModelStringInput
-  stageText: ModelStringInput
-  stagePercentComplete: ModelIntInput
-  step: ModelStringInput
-  stepHeader: ModelStringInput
-  stepText: ModelStringInput
-  stepPercentComplete: ModelIntInput
-  and: [ModelScreenConditionInput]
-  or: [ModelScreenConditionInput]
-  not: ModelScreenConditionInput
 }
 
 type ModelAddressConnection {
@@ -805,6 +580,9 @@ type ModelNotificationConnection {
 
 input ModelNotificationFilterInput {
   id: ModelIDInput
+  sendEmail: ModelBooleanInput
+  sendSMS: ModelBooleanInput
+  private: ModelBooleanInput
   fromUserId: ModelStringInput
   toUserId: ModelStringInput
   fromEmail: ModelStringInput
@@ -833,6 +611,9 @@ input ModelNotificationFilterInput {
 
 input CreateNotificationInput {
   id: ID
+  sendEmail: Boolean
+  sendSMS: Boolean
+  private: Boolean
   fromUserId: String!
   toUserId: String!
   fromEmail: String
@@ -858,6 +639,9 @@ input CreateNotificationInput {
 
 input UpdateNotificationInput {
   id: ID!
+  sendEmail: Boolean
+  sendSMS: Boolean
+  private: Boolean
   fromUserId: String
   toUserId: String
   fromEmail: String
@@ -886,6 +670,9 @@ input DeleteNotificationInput {
 }
 
 input ModelNotificationConditionInput {
+  sendEmail: ModelBooleanInput
+  sendSMS: ModelBooleanInput
+  private: ModelBooleanInput
   fromUserId: ModelStringInput
   toUserId: ModelStringInput
   fromEmail: ModelStringInput

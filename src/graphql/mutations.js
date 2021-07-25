@@ -1,48 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createTodo = /* GraphQL */ `
-  mutation CreateTodo(
-    $input: CreateTodoInput!
-    $condition: ModelTodoConditionInput
-  ) {
-    createTodo(input: $input, condition: $condition) {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateTodo = /* GraphQL */ `
-  mutation UpdateTodo(
-    $input: UpdateTodoInput!
-    $condition: ModelTodoConditionInput
-  ) {
-    updateTodo(input: $input, condition: $condition) {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteTodo = /* GraphQL */ `
-  mutation DeleteTodo(
-    $input: DeleteTodoInput!
-    $condition: ModelTodoConditionInput
-  ) {
-    deleteTodo(input: $input, condition: $condition) {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!
@@ -69,7 +27,6 @@ export const createUser = /* GraphQL */ `
       idType
       percentOwner
       sevenAwareAgree
-      status
       createdAt
       updatedAt
     }
@@ -101,7 +58,6 @@ export const updateUser = /* GraphQL */ `
       idType
       percentOwner
       sevenAwareAgree
-      status
       createdAt
       updatedAt
     }
@@ -133,7 +89,6 @@ export const deleteUser = /* GraphQL */ `
       idType
       percentOwner
       sevenAwareAgree
-      status
       createdAt
       updatedAt
     }
@@ -147,27 +102,14 @@ export const createForm = /* GraphQL */ `
     createForm(input: $input, condition: $condition) {
       id
       userId
+      authorizedSignatoryUserId
       formId
       sopVersion
       loanAmount
       screenId
       screenNavigation
       percentComplete
-      restricted
-      restrictedSpeculative
-      restrictedCoins
-      restrictedLending
-      restrictedPackaging
-      restrictedPyramid
-      restrictedIllegal
-      restrictedGambling
       ineligible
-      ineligibleNonProfit
-      ineligibleRealestate
-      ineligibleLending
-      ineligiblePyramid
-      ineligibleGambling
-      ineligibleIllegal
       forProfit
       us
       businessEmail
@@ -204,27 +146,14 @@ export const updateForm = /* GraphQL */ `
     updateForm(input: $input, condition: $condition) {
       id
       userId
+      authorizedSignatoryUserId
       formId
       sopVersion
       loanAmount
       screenId
       screenNavigation
       percentComplete
-      restricted
-      restrictedSpeculative
-      restrictedCoins
-      restrictedLending
-      restrictedPackaging
-      restrictedPyramid
-      restrictedIllegal
-      restrictedGambling
       ineligible
-      ineligibleNonProfit
-      ineligibleRealestate
-      ineligibleLending
-      ineligiblePyramid
-      ineligibleGambling
-      ineligibleIllegal
       forProfit
       us
       businessEmail
@@ -261,27 +190,14 @@ export const deleteForm = /* GraphQL */ `
     deleteForm(input: $input, condition: $condition) {
       id
       userId
+      authorizedSignatoryUserId
       formId
       sopVersion
       loanAmount
       screenId
       screenNavigation
       percentComplete
-      restricted
-      restrictedSpeculative
-      restrictedCoins
-      restrictedLending
-      restrictedPackaging
-      restrictedPyramid
-      restrictedIllegal
-      restrictedGambling
       ineligible
-      ineligibleNonProfit
-      ineligibleRealestate
-      ineligibleLending
-      ineligiblePyramid
-      ineligibleGambling
-      ineligibleIllegal
       forProfit
       us
       businessEmail
@@ -305,78 +221,6 @@ export const deleteForm = /* GraphQL */ `
       nacis
       agreeLexisNexis
       fullOwner
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createScreen = /* GraphQL */ `
-  mutation CreateScreen(
-    $input: CreateScreenInput!
-    $condition: ModelScreenConditionInput
-  ) {
-    createScreen(input: $input, condition: $condition) {
-      id
-      formId
-      sopVersion
-      userType
-      percentComplete
-      stage
-      stageHeader
-      stageText
-      stagePercentComplete
-      step
-      stepHeader
-      stepText
-      stepPercentComplete
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateScreen = /* GraphQL */ `
-  mutation UpdateScreen(
-    $input: UpdateScreenInput!
-    $condition: ModelScreenConditionInput
-  ) {
-    updateScreen(input: $input, condition: $condition) {
-      id
-      formId
-      sopVersion
-      userType
-      percentComplete
-      stage
-      stageHeader
-      stageText
-      stagePercentComplete
-      step
-      stepHeader
-      stepText
-      stepPercentComplete
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteScreen = /* GraphQL */ `
-  mutation DeleteScreen(
-    $input: DeleteScreenInput!
-    $condition: ModelScreenConditionInput
-  ) {
-    deleteScreen(input: $input, condition: $condition) {
-      id
-      formId
-      sopVersion
-      userType
-      percentComplete
-      stage
-      stageHeader
-      stageText
-      stagePercentComplete
-      step
-      stepHeader
-      stepText
-      stepPercentComplete
       createdAt
       updatedAt
     }
@@ -455,6 +299,9 @@ export const createNotification = /* GraphQL */ `
   ) {
     createNotification(input: $input, condition: $condition) {
       id
+      sendEmail
+      sendSMS
+      private
       fromUserId
       toUserId
       fromEmail
@@ -488,6 +335,9 @@ export const updateNotification = /* GraphQL */ `
   ) {
     updateNotification(input: $input, condition: $condition) {
       id
+      sendEmail
+      sendSMS
+      private
       fromUserId
       toUserId
       fromEmail
@@ -521,6 +371,9 @@ export const deleteNotification = /* GraphQL */ `
   ) {
     deleteNotification(input: $input, condition: $condition) {
       id
+      sendEmail
+      sendSMS
+      private
       fromUserId
       toUserId
       fromEmail

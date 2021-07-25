@@ -2,10 +2,21 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 
+/* Import the Amplify Auth API */
+import { Auth } from 'aws-amplify';
+
+//AWS Amplify GraphQL libraries
+import { API } from 'aws-amplify';
+import { 
+    createUser as createUserMutation, 
+    createForm as createFormMutation,
+} from '../graphql/mutations';
+
 // redux store
 import { useSelector, connect } from 'react-redux';
 import {
   selectForm,
+  updateNewForm,
 } from 'features/form/formSlice'
 
 // reactstrap components
@@ -29,6 +40,7 @@ import US from "./opportunity-sections/US";
 import USNo from "./opportunity-sections/USNo";
 import Eligible from "./opportunity-sections/Eligible";
 import ProfileSignUp from "./opportunity-sections/ProfileSignUp";
+import { updateNew } from "typescript";
 
 const mapStateToProps = (state) => {
   //console.log('mapStateToProps - state.form', state.form)
@@ -37,14 +49,20 @@ const mapStateToProps = (state) => {
   };
 };
 
+const currentSOPVersion = "2021-v04.34"
+
 function Opportunity(props) {
   const history = useHistory()
-  const [authState, setAuthState] = useState("eligibility")  
+  
   const [screenNavigation, setScreenNavigation] = useState(["Eligibility>"])  
   const [screenHeader, setScreenHeader] = useState("")
 
-  //const thisForm = useState(useSelector(selectForm))
-  const [form, setForm] = useState(useSelector(selectForm))
+  const [authState, setAuthState] = useState("eligibility")  
+  const [userExists, setUserExists] = useState(false)  
+  const [modal, setModal] = useState(false)  
+  const [modalTitle, setModalTitle] = useState("")  
+  const [modalText, setModalText] = useState("")  
+
   //console.log('opportunity.js - form', form)
   const [currentPage, setCurrentPage] = useState()
   const [showNext, setShowNext] = useState(true)
@@ -116,9 +134,75 @@ function Opportunity(props) {
     setScreenNavigation(["Profile>ConfirmSignUp"])
   };  
 
+  async function createNewUserAndForm() {
+    console.log('createNewUserAndForm - props.form', props.form)
+    
+    //create the new user
+    const newUserData = {
+      userId: props.form.userId,
+      password: props.form.password,
+      userType: "Borrower",
+      email: props.form.userId,
+      sevenAwareAgree: true,
+    }
+
+    const apiUserData = await API.graphql({ 
+      query: 
+        createUserMutation, 
+        variables: { input: newUserData} 
+    })
+    console.log('newUserAndForm - apiUserData', apiUserData)
+    const newUserId = apiUserData.data.createUser.id    
+    
+    //create the new form/application
+    const newFormData = {   
+        sopVersion: currentSOPVersion,
+        userId: props.form.userId,
+        authorizedSignatoryUserId: props.form.authorizedSignatoryUserId,        
+        screenNavigation: "Profile>", 
+        ineligible: false,
+        forProfit: true,
+        us: true,
+        businessEmail: props.form.userId,
+        agreeSevenAware: true,
+    }    
+
+    //create the new form for this user
+    const apiFormData = await API.graphql(
+        { query: createFormMutation, 
+            variables: { input: newFormData } 
+        }
+    )
+    console.log('newUserAndForm - apiFormData', apiFormData)
+
+    // //update redux                      
+    // dispatch(updateNewForm({
+    //   id = action.payload.id,
+    //   userId = action.payload.userId,
+    //   authorizedSignatoryUserId = action.payload.authorizedSignatoryUserId,      
+    //   screenNavigation = action.payload.screenNavigation,
+    //   ineligible = action.payload.ineligible,
+    //   forProfit = action.payload.forProfit,
+    //   us = action.payload.us,
+    //   businessEmail = action.payload.businessEmail,    
+    // })) 
+
+    // // //update the local form store 
+    // // const newForm = { 
+    // //     ...prop.form, 
+    // //     businessEmail: email,
+    // // }
+
+    // //update redux & graphql
+    // //dispatch(updateForm(newForm))                           
+
+    //  //go to the next step, stage, or form
+    //  history.replace("/verify")    
+};
+
   const handleNextClick = () => {
     const screenId = screenNavigation.slice(-1)[0];
-    console.log('Opportunity.js - handleNextClick - screenId', screenId)
+    //console.log('Opportunity.js - handleNextClick - screenId', screenId)
     //console.log('Opportunity.js - handleNextClick - props', props)
 
     let nextScreenId = ""
@@ -159,13 +243,20 @@ function Opportunity(props) {
         //update form
         //send a notification
         break; 
+      case "SignUp>":
+        //set next step
+        nextScreenId = "SignUp>"
+
+        //create the new 7(a)ware user/application
+        createNewUserAndForm()
+        break; 
       default:
       //don't save the form
     }
     
     //show the next step, stage, or form
     let newScreenNavigation = Object.assign([], screenNavigation);
-    console.log('Opportunity.js - handleNextClick - newScreenNavigation', newScreenNavigation)
+    //console.log('Opportunity.js - handleNextClick - newScreenNavigation', newScreenNavigation)
     newScreenNavigation.push(nextScreenId)    
     setScreenNavigation(newScreenNavigation)
   }

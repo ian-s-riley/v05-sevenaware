@@ -7,6 +7,8 @@ import { createNotification as createNotificationMutation } from '../../graphql/
 export const notificationSlice = createSlice({
   name: 'notification',
   initialState: {
+    sendEmail: false,
+    sendSMS: false,
     fromUserId: "",
     toUserId: "",
     fromEmail: "",
@@ -32,11 +34,13 @@ export const notificationSlice = createSlice({
 });
 
 export const createNotificationAsync = notification => dispatch => {
-    console.log('createNotificationAsync: notification', notification)
+    //console.log('createNotificationAsync: notification', notification)
     API.graphql({ 
         query: createNotificationMutation, 
         variables: { 
           input: {
+            sendEmail: notification.sendEmail,
+            sendSMS: notification.sendSMS,
             fromUserId: notification.fromUserId,
             toUserId: notification.toUserId,
             fromEmail: notification.fromEmail,
@@ -63,7 +67,7 @@ export const createNotificationAsync = notification => dispatch => {
     })
     .then (data => {
         //console.log(data)      
-        console.log('createNotificationAsync: data', data)  
+        //console.log('createNotificationAsync: data', data)  
     }) 
   };
 

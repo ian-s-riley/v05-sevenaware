@@ -10,7 +10,7 @@ export const userSlice = createSlice({
     id: "",
     userId: "",
     formId: "",
-    userType: "",    
+    userType: "",  
     email: "",    
     password: "",
     prefix: "",
