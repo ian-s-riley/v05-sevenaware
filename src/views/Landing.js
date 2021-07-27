@@ -1,5 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
+
+//redux sstore
+import { useDispatch } from 'react-redux';
+import {
+  updateNewForm,
+} from 'features/form/formSlice'
 
 // nodejs library that concatenates strings
 import classnames from "classnames";
@@ -23,6 +29,20 @@ import {
 
 
 function Landing() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(updateNewForm({
+      id: "",
+      userId: "",
+      password: "",
+      screenNavigation: "", 
+      ineligible: false,
+      forProfit: true,
+      us: true,
+      businessEmail: "",   
+    })) 
+  }, [])  
 
   return (
     <>

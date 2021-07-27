@@ -25,8 +25,7 @@ type User {
 
 type Form {
   id: ID!
-  userId: String
-  authorizedSignatoryUserId: String
+  userId: String!
   formId: String
   sopVersion: String
   loanAmount: Float
@@ -36,7 +35,7 @@ type Form {
   ineligible: Boolean
   forProfit: Boolean
   us: Boolean
-  businessEmail: Boolean
+  businessEmail: String
   entityType: String
   fein: String
   noFein: Boolean
@@ -353,7 +352,6 @@ type ModelFormConnection {
 input ModelFormFilterInput {
   id: ModelIDInput
   userId: ModelStringInput
-  authorizedSignatoryUserId: ModelStringInput
   formId: ModelStringInput
   sopVersion: ModelStringInput
   loanAmount: ModelFloatInput
@@ -363,7 +361,7 @@ input ModelFormFilterInput {
   ineligible: ModelBooleanInput
   forProfit: ModelBooleanInput
   us: ModelBooleanInput
-  businessEmail: ModelBooleanInput
+  businessEmail: ModelStringInput
   entityType: ModelStringInput
   fein: ModelStringInput
   noFein: ModelBooleanInput
@@ -391,8 +389,7 @@ input ModelFormFilterInput {
 
 input CreateFormInput {
   id: ID
-  userId: String
-  authorizedSignatoryUserId: String
+  userId: String!
   formId: String
   sopVersion: String
   loanAmount: Float
@@ -402,7 +399,7 @@ input CreateFormInput {
   ineligible: Boolean
   forProfit: Boolean
   us: Boolean
-  businessEmail: Boolean
+  businessEmail: String
   entityType: String
   fein: String
   noFein: Boolean
@@ -428,7 +425,6 @@ input CreateFormInput {
 input UpdateFormInput {
   id: ID!
   userId: String
-  authorizedSignatoryUserId: String
   formId: String
   sopVersion: String
   loanAmount: Float
@@ -438,7 +434,7 @@ input UpdateFormInput {
   ineligible: Boolean
   forProfit: Boolean
   us: Boolean
-  businessEmail: Boolean
+  businessEmail: String
   entityType: String
   fein: String
   noFein: Boolean
@@ -467,7 +463,6 @@ input DeleteFormInput {
 
 input ModelFormConditionInput {
   userId: ModelStringInput
-  authorizedSignatoryUserId: ModelStringInput
   formId: ModelStringInput
   sopVersion: ModelStringInput
   loanAmount: ModelFloatInput
@@ -477,7 +472,7 @@ input ModelFormConditionInput {
   ineligible: ModelBooleanInput
   forProfit: ModelBooleanInput
   us: ModelBooleanInput
-  businessEmail: ModelBooleanInput
+  businessEmail: ModelStringInput
   entityType: ModelStringInput
   fein: ModelStringInput
   noFein: ModelBooleanInput

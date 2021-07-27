@@ -46,7 +46,7 @@ function OwnerSignUp(prop) {
     const [passwordState, setPasswordState] = useState("");
     const [password2State, setPassword2State] = useState("");
     const [errorMessage, setErrorMessage] = useState();
-    const [agreeSevenAware, setAgreeSevenAware] = useState(false);
+    const [sevenAwareAgree, setSevenAwareAgree] = useState(false);
 
     const search = useLocation().search;
     const jwt = new URLSearchParams(search).get('jwt');
@@ -86,7 +86,7 @@ function OwnerSignUp(prop) {
         if (emailState !== "success") { return false }
         if (passwordState !== "success") { return false }
         if (password2State !== "success") { return false }
-        if (!agreeSevenAware) { return false }
+        if (!sevenAwareAgree) { return false }
 
         //amplify auth sign up
         try {
@@ -241,10 +241,10 @@ function OwnerSignUp(prop) {
                                             <FormGroup check>
                                                 <Label check>
                                                     <Input
-                                                        id="agreeSevenAware"
+                                                        id="sevenAwareAgree"
                                                         type="checkbox"
-                                                        defaultChecked={agreeSevenAware}
-                                                        onClick={() => setAgreeSevenAware(!agreeSevenAware)}
+                                                        defaultChecked={sevenAwareAgree}
+                                                        onClick={() => setSevenAwareAgree(!sevenAwareAgree)}
                                                     />{' '}
                                                     I understand how 7(a)ware will use and protect my data. And I agree to the terms & conditions.
                                                     <span className="form-check-sign">

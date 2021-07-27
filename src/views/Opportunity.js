@@ -13,9 +13,8 @@ import {
 } from '../graphql/mutations';
 
 // redux store
-import { useSelector, connect } from 'react-redux';
+import { useDispatch, connect } from 'react-redux';
 import {
-  selectForm,
   updateNewForm,
 } from 'features/form/formSlice'
 
@@ -24,7 +23,8 @@ import {
   Button,
   Container,
   Row,
-  Col,  
+  Col, 
+  Modal, 
 } from "reactstrap";
 
 // core components
@@ -40,7 +40,6 @@ import US from "./opportunity-sections/US";
 import USNo from "./opportunity-sections/USNo";
 import Eligible from "./opportunity-sections/Eligible";
 import ProfileSignUp from "./opportunity-sections/ProfileSignUp";
-import { updateNew } from "typescript";
 
 const mapStateToProps = (state) => {
   //console.log('mapStateToProps - state.form', state.form)
@@ -52,16 +51,19 @@ const mapStateToProps = (state) => {
 const currentSOPVersion = "2021-v04.34"
 
 function Opportunity(props) {
+  const dispatch = useDispatch()
   const history = useHistory()
   
   const [screenNavigation, setScreenNavigation] = useState(["Eligibility>"])  
   const [screenHeader, setScreenHeader] = useState("")
 
+  const [emailState, setEmailState] = useState("")
+  const [passwordState, setPasswordState] = useState("")
+  const [passwordMatchState, setPasswordMatchState] = useState("")
+  
   const [authState, setAuthState] = useState("eligibility")  
   const [userExists, setUserExists] = useState(false)  
-  const [modal, setModal] = useState(false)  
-  const [modalTitle, setModalTitle] = useState("")  
-  const [modalText, setModalText] = useState("")  
+  const [modal, setModal] = useState({visible: false, title: "", message: ""}) 
 
   //console.log('opportunity.js - form', form)
   const [currentPage, setCurrentPage] = useState()
@@ -76,13 +78,19 @@ function Opportunity(props) {
     const screenId = screenNavigation.slice(-1)[0];
     console.log("showScreen - screenId", screenId)
     switch (screenId) {
-      case "Profile>ConfirmSignUp":
-        setScreenHeader("Verify 7(a)ware Account Profile")
-        setCurrentPage(<ProfileConfirmSignUp />)
-        break;
+      case "SignUp>Verify":
+        history.replace("/verify")
       case "SignUp>":
         setScreenHeader("7(a)ware Account Profile")
-        setCurrentPage(<ProfileSignUp />)
+        setCurrentPage(
+          <ProfileSignUp 
+            emailState={emailState}
+            setEmailState={setEmailState}
+            passwordState={passwordState}
+            setPasswordState={setPasswordState}
+            passwordMatchState={passwordMatchState}
+            setPasswordMatchState={setPasswordMatchState}
+          />)
         break;
       case "Eligible>":
         setScreenHeader("It looks like your business is eligible for a 7(a) loan.")
@@ -135,69 +143,82 @@ function Opportunity(props) {
   };  
 
   async function createNewUserAndForm() {
-    console.log('createNewUserAndForm - props.form', props.form)
-    
-    //create the new user
+    //console.log('createNewUserAndForm - props.form', props.form)
     const newUserData = {
-      userId: props.form.userId,
+      userId: props.form.userId,      
       password: props.form.password,
       userType: "Borrower",
+      //userRole: "Primary Contact"
       email: props.form.userId,
       sevenAwareAgree: true,
     }
 
-    const apiUserData = await API.graphql({ 
-      query: 
-        createUserMutation, 
-        variables: { input: newUserData} 
-    })
-    console.log('newUserAndForm - apiUserData', apiUserData)
-    const newUserId = apiUserData.data.createUser.id    
+    //amplify auth sign up
+    try {
+      const { user } = await Auth.signUp({
+          username: newUserData.userId,
+          password: newUserData.password,
+          attributes: {
+              email: newUserData.userId
+          }});
+          
+          /* Once the user successfully signs up, update form state to show the confirm sign up form for MFA */
+          
+          //create the new user in the DB    
+          const apiUserData = await API.graphql({ 
+            query: 
+              createUserMutation, 
+              variables: { input: newUserData} 
+          })
+          console.log('newUserAndForm - apiUserData', apiUserData)
+          const newUserId = apiUserData.data.createUser.id    
+          
+          //create the new form/application
+          const newFormData = {   
+              sopVersion: currentSOPVersion,
+              userId: newUserData.userId,   
+              //authorizedUserId: props.form.authorizedUserId
+              screenNavigation: "Profile>", 
+              ineligible: false,
+              forProfit: true,
+              us: true,
+              businessEmail: newUserData.userId,
+          }    
+
+          //create the new form for this user
+          const apiFormData = await API.graphql(
+              { query: createFormMutation, 
+                  variables: { input: newFormData } 
+              }
+          )
+          const newFormId = apiFormData.data.createForm.id    
+          const newForm = {...newFormData, id: newFormId}
+          console.log('newUserAndForm - newForm', newForm)
+
+
+          //update redux                      
+          dispatch(updateNewForm({
+            newForm
+          })) 
+
+          //send new user notification to lender
+
+          //create a new AWS authenticated user, and invite the 2 factor verification
+
+
+          //  //go to the next step, stage, or form
+          //  history.replace("/verify") 
+
+
+
+    } catch (err) { 
+      //show an error
+      console.log({ err })    
+      setModal({visible: true, title: "SignUp Warning", message: "There is already a 7(a)ware user with this email (" + props.form.userId + "). Please sign in instead."})            
+      return false
+    }
     
-    //create the new form/application
-    const newFormData = {   
-        sopVersion: currentSOPVersion,
-        userId: props.form.userId,
-        authorizedSignatoryUserId: props.form.authorizedSignatoryUserId,        
-        screenNavigation: "Profile>", 
-        ineligible: false,
-        forProfit: true,
-        us: true,
-        businessEmail: props.form.userId,
-        agreeSevenAware: true,
-    }    
-
-    //create the new form for this user
-    const apiFormData = await API.graphql(
-        { query: createFormMutation, 
-            variables: { input: newFormData } 
-        }
-    )
-    console.log('newUserAndForm - apiFormData', apiFormData)
-
-    // //update redux                      
-    // dispatch(updateNewForm({
-    //   id = action.payload.id,
-    //   userId = action.payload.userId,
-    //   authorizedSignatoryUserId = action.payload.authorizedSignatoryUserId,      
-    //   screenNavigation = action.payload.screenNavigation,
-    //   ineligible = action.payload.ineligible,
-    //   forProfit = action.payload.forProfit,
-    //   us = action.payload.us,
-    //   businessEmail = action.payload.businessEmail,    
-    // })) 
-
-    // // //update the local form store 
-    // // const newForm = { 
-    // //     ...prop.form, 
-    // //     businessEmail: email,
-    // // }
-
-    // //update redux & graphql
-    // //dispatch(updateForm(newForm))                           
-
-    //  //go to the next step, stage, or form
-    //  history.replace("/verify")    
+       
 };
 
   const handleNextClick = () => {
@@ -212,40 +233,41 @@ function Opportunity(props) {
         //set next step
         nextScreenId = "Eligibility>ForProfit"
         if (props.form.ineligible) { nextScreenId = "Eligibility>Ineligible" }
-
-        //validate data
-        //update form
-        //send a notification
         break;        
        case "Eligibility>ForProfit":
         //set next step
         nextScreenId = "Eligibility>US"
         if (!props.form.forProfit) { nextScreenId = "Eligibility>NotForProfit" }
-
-        //validate data
-        //update form
-        //send a notification
         break; 
       case "Eligibility>US":
         //set next step
         nextScreenId = "Eligible>"
         if (!props.form.us) { nextScreenId = "Eligibility>Non-US" }
-
-        //validate data
-        //update form
-        //send a notification
         break; 
       case "Eligible>":
         //set next step
         nextScreenId = "SignUp>"
-
-        //validate data
-        //update form
-        //send a notification
         break; 
       case "SignUp>":
         //set next step
-        nextScreenId = "SignUp>"
+        nextScreenId = "SignUp>Verify"
+
+        //validation
+        if (emailState === "error") {
+          setModal({visible: true, title: "Oops... email!", message:"Please enter a valid email address to verify your new account."})
+          return false
+        }
+        if (passwordState === "error") {
+          setModal({visible: true, title: "Oops... password", message:"You must enter a secure password: at lease 8 characters long and contain at least 1 upper case letter, 1 lower case letter, 1 number, and one special character."})
+          return false
+        }
+        if (passwordMatchState === "error") {
+          setModal({visible: true, title: "Oops... password mismatch", message:"Please make sure your passwords match."})
+          return false
+        }
+        // if (passwordState !== "success") {return false}
+        // if (passwordMatchState !== "success") {return false}
+        // if (!agreeSevenAware) {return false}        
 
         //create the new 7(a)ware user/application
         createNewUserAndForm()
@@ -331,6 +353,25 @@ function Opportunity(props) {
           </div>
         </div>
       </div>
+      <Modal isOpen={modal.visible} toggle={() => setModal({visible: false, title: "", message: ""})}>
+        <div className="modal-header">
+            <h5 className="modal-title">
+                {modal.title}
+            </h5>
+            <button
+                aria-label="Close"
+                className="close"
+                data-dismiss="modal"
+                type="button"
+                onClick={() => setModal({visible: false, title: "", message: ""})}
+            >
+                <span aria-hidden={true}>×</span>
+            </button>
+        </div>
+        <div className="modal-body">
+            {modal.message}
+        </div>
+    </Modal>
       <FooterGray />
     </>
   );

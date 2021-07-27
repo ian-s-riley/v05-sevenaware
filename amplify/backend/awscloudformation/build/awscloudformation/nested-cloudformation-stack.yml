@@ -141,14 +141,8 @@
           "AppSyncApiName": "v05sevenaware",
           "DynamoDBBillingMode": "PAY_PER_REQUEST",
           "DynamoDBEnableServerSideEncryption": false,
-          "AuthCognitoUserPoolId": {
-            "Fn::GetAtt": [
-              "authv05sevenaware",
-              "Outputs.UserPoolId"
-            ]
-          },
           "S3DeploymentBucket": "amplify-amplifydc198c4383344-staging-162254-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/8bd3ae5fa2da8e46965f68f9539b6191e9980c99",
+          "S3DeploymentRootKey": "amplify-appsync-files/efa0cecfb3b8b2571b3c999ce7bed70fa80bb016",
           "env": "staging"
         }
       }

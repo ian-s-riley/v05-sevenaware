@@ -10,7 +10,6 @@ export const formSlice = createSlice({
     id: "",
     userId: "",
     password: "",
-    authorizedSignatoryUserId: "",
     screenId: "",
     screenNavigation: "", 
     percentComplete: 0,
@@ -44,8 +43,7 @@ export const formSlice = createSlice({
     updateForm: (state, action) => {
       console.log('updateForm: action', action)
       state.id = action.payload.id
-      state.userId = action.payload.userId
-      state.authorizedSignatoryUserId = action.payload.authorizedSignatoryUserId      
+      state.userId = action.payload.userId   
       state.screenId = action.payload.screenId
       state.screenNavigation = action.payload.screenNavigation
       state.percentComplete = action.payload.percentComplete 
@@ -89,17 +87,18 @@ export const formSlice = createSlice({
     updateSignUpProfile: (state, action) => {
       state.userId = action.payload.userId
       state.password = action.payload.password
-      state.authorizedSignatoryUserId = action.payload.authorizedSignatoryUserId 
     },
     updateNewForm: (state, action) => {
+      console.log('updateNewForm: action', action)
       state.id = action.payload.id
-      state.userId = action.payload.userId
-      state.authorizedSignatoryUserId = action.payload.authorizedSignatoryUserId      
+      state.sopVersion = action.payload.sopVersion      
+      state.userId = action.payload.userId   
+      //state.authorizedUserId = action.payload.authorizedUserId   
       state.screenNavigation = action.payload.screenNavigation
       state.ineligible = action.payload.ineligible
       state.forProfit = action.payload.forProfit
       state.us = action.payload.us
-      state.businessEmail = action.payload.businessEmail      
+      state.businessEmail = action.payload.businessEmail     
     },
   },
 });
@@ -125,7 +124,6 @@ export const updateFormAsync = form => dispatch => {
         input: {
           id: form.id,
           userId: form.userId, 
-          authorizedSignatoryUserId: form.authorizedSignatoryUserId, 
           screenId: form.screenId,
           screenNavigation: form.screenNavigation,
           loanAmount: form.loanAmount,

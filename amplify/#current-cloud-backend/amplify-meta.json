@@ -27,7 +27,7 @@
         "IdentityPoolName": "testAuthIdentityPool__staging",
         "UserPoolName": "v05sevenaware"
       },
-      "lastPushTimeStamp": "2021-07-25T21:26:54.502Z",
+      "lastPushTimeStamp": "2021-07-26T19:48:12.347Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifydc198c4383344-staging-162254-deployment/amplify-cfn-templates/auth/v05sevenaware-cloudformation-template.yml",
         "logicalId": "authv05sevenaware"
@@ -44,28 +44,21 @@
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 365,
-              "description": "v05-sevenaware-apikey"
+              "description": "v05-sevenaware"
             }
           },
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authv05sevenaware"
-              }
-            }
-          ]
+          "additionalAuthenticationProviders": []
         },
-        "GraphQLAPIIdOutput": "3e3o5xcmerelnikxhysqesgh6i",
-        "GraphQLAPIEndpointOutput": "https://24qbov3tabhthnovpm4qlvizsq.appsync-api.us-east-1.amazonaws.com/graphql",
-        "GraphQLAPIKeyOutput": "da2-67hio6g2yzggnbw7idiu6565q4"
+        "GraphQLAPIIdOutput": "qlgbrc4x3ravplhsonpj72klbi",
+        "GraphQLAPIEndpointOutput": "https://bj4d3ffjxzagjjrbnnsnh7tu6y.appsync-api.us-east-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-4iymhg23tzhvreu6ismu5z6f2a"
       },
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifydc198c4383344-staging-162254-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiv05sevenaware"
       },
-      "lastPushTimeStamp": "2021-07-25T21:26:58.845Z",
-      "lastPushDirHash": "9mWAeYEvf3s5sdu7+kGm74DkhrE="
+      "lastPushTimeStamp": "2021-07-26T19:48:15.135Z",
+      "lastPushDirHash": "V66jeaCr6z1oFntX0cW8tdxj914="
     }
   },
   "storage": {}

@@ -90,7 +90,6 @@ export const onCreateForm = /* GraphQL */ `
     onCreateForm {
       id
       userId
-      authorizedSignatoryUserId
       formId
       sopVersion
       loanAmount
@@ -131,7 +130,6 @@ export const onUpdateForm = /* GraphQL */ `
     onUpdateForm {
       id
       userId
-      authorizedSignatoryUserId
       formId
       sopVersion
       loanAmount
@@ -172,7 +170,6 @@ export const onDeleteForm = /* GraphQL */ `
     onDeleteForm {
       id
       userId
-      authorizedSignatoryUserId
       formId
       sopVersion
       loanAmount

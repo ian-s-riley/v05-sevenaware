@@ -69,7 +69,6 @@ export const getForm = /* GraphQL */ `
     getForm(id: $id) {
       id
       userId
-      authorizedSignatoryUserId
       formId
       sopVersion
       loanAmount
@@ -115,7 +114,6 @@ export const listForms = /* GraphQL */ `
       items {
         id
         userId
-        authorizedSignatoryUserId
         formId
         sopVersion
         loanAmount

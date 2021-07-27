@@ -1,8 +1,8 @@
 type User @model {
   id: ID!
-  userId: String
+  userId: String  
   formId: String
-  userType: String
+  userType: String  
   email: String
   password: String
   preifx: String
@@ -23,8 +23,7 @@ type User @model {
 
 type Form @model {
   id: ID!
-  userId: String
-  authorizedSignatoryUserId: String
+  userId: String!
   formId: String
   sopVersion: String
   loanAmount: Float
@@ -34,7 +33,7 @@ type Form @model {
   ineligible: Boolean
   forProfit: Boolean
   us: Boolean
-  businessEmail: Boolean
+  businessEmail: String
   entityType: String
   fein: String
   noFein: Boolean

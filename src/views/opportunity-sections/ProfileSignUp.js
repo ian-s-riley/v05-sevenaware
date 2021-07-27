@@ -6,23 +6,16 @@ import { useDispatch, connect } from 'react-redux';
 import {
   updateSignUpProfile,
 } from 'features/form/formSlice'
-import {
-    createNotificationAsync,  
-} from 'features/notification/notificationSlice'
 
 // reactstrap components
 import {
-  Button,
   FormGroup,
   Form,
   Label,
   FormText,
   Input,
-  Container,
   Row,
   Col,
-  UncontrolledTooltip,
-  Modal,
 } from "reactstrap";
 
 const mapStateToProps = (state) => {
@@ -31,21 +24,16 @@ const mapStateToProps = (state) => {
         signUpProfile: {
             userId: state.form.userId,
             password: state.form.password,
-            authorizedSignatoryUserId: state.form.setAuthorizedSigantoryId,
         }        
     };
   };
 
 function ProfileSignUp(props) {
-    const history = useHistory()
     const dispatch = useDispatch()
-    
-    const [emailState, setEmailState] = useState("")
-    const [passwordState, setPasswordState] = useState("")
-    const [password2State, setPassword2State] = useState("")
+
     const [authorizedSignatory, setAuthorizedSigantory] = useState(false); 
     const [authorizedSignatoryUserIdState, setauthorizedSignatoryUserIdState] = useState("")
-    const [agreeSevenAware, setAgreeSevenAware] = useState(false)      
+    const [sevenAwareAgree, setSevenAwareAgree] = useState(false)      
 
     // function that returns true if value is email, false otherwise
     const verifyEmail = value => {        
@@ -80,25 +68,23 @@ function ProfileSignUp(props) {
         dispatch(updateSignUpProfile({
             userId: newSignUpProfile.userId,
             password: newSignUpProfile.password,
-            authorizedSignatoryUserId: newSignUpProfile.authorizedSignatoryUserId,
         })) 
     }
 
     function resetAuthorizedSignatory() {        
-        //update redux                   
-        const newSignUpProfile = {...props.signUpProfile, authorizedSignatoryUserId: ""}   
-        dispatch(updateSignUpProfile({
-            userId: newSignUpProfile.userId,
-            password: newSignUpProfile.password,
-            authorizedSignatoryUserId: "",
-        })) 
+        // //update redux                   
+        // const newSignUpProfile = {...props.signUpProfile, authorizedSignatoryUserId: ""}   
+        // dispatch(updateSignUpProfile({
+        //     userId: newSignUpProfile.userId,
+        //     password: newSignUpProfile.password,
+        // })) 
     }
 
   return (
     <Form className="settings-form">     
                 <Row>
                 <Col className="ml-auto mr-auto h5" md="10">
-                <FormGroup className={emailState === "success" ? "has-success" : null}>
+                <FormGroup className={props.emailState === "success" ? "has-success" : null}>
                 <Label for="userId" className="control-label">Email Address (User ID)</Label>
                 <Input 
                 type="text" 
@@ -107,9 +93,9 @@ function ProfileSignUp(props) {
                 defaultValue={props.signUpProfile.userId}
                 onChange = {event => {
                     if (verifyEmail(event.target.value)) {
-                        setEmailState("success");
+                        props.setEmailState("success");
                     } else {
-                        setEmailState("error");
+                        props.setEmailState("error");
                     }
                     handleChange(event)
                     }}
@@ -117,7 +103,7 @@ function ProfileSignUp(props) {
             </FormGroup> 
             <Row>
             <Col className="ml-auto mr-auto" md="6">
-            <FormGroup className={passwordState === "success" ? "has-success" : null}>
+            <FormGroup className={props.passwordState === "success" ? "has-success" : null}>
                 <Label for="password">Password</Label>
                 <Input
                 type="password"
@@ -127,9 +113,9 @@ function ProfileSignUp(props) {
                 autoComplete="off"
                 onChange = {event => {
                     if (verifyPassword(event.target.value)) {
-                        setPasswordState("success");
+                        props.setPasswordState("success");
                     } else {
-                        setPasswordState("error");
+                        props.setPasswordState("error");
                     }
                     handleChange(event)
                     }}
@@ -137,7 +123,7 @@ function ProfileSignUp(props) {
             </FormGroup>
             </Col>
             <Col className="ml-auto mr-auto" md="6">
-            <FormGroup className={password2State === "success" ? "has-success" : null}>
+            <FormGroup className={props.passwordMatchState === "success" ? "has-success" : null}>
                 <Label for="password2">Confirm Password</Label>
                 <Input
                 type="password"
@@ -146,9 +132,9 @@ function ProfileSignUp(props) {
                 autoComplete="off"
                 onChange = {event => {
                     if (verifyPasswordMatch(event.target.value)) {
-                        setPassword2State("success");
+                        props.passwordMatchState("success");
                     } else {
-                        setPassword2State("error");
+                        props.passwordMatchState("error");
                     }
                     }}
                 />
@@ -177,20 +163,18 @@ function ProfileSignUp(props) {
                 type="text" 
                 name="authorizedSignatoryUserId" 
                 id="authorizedSignatoryUserId" 
-                defaultValue={props.signUpProfile.authorizedSignatoryUserId}
                 onChange = {event => {
                     if (verifyEmail(event.target.value)) {
                         setauthorizedSignatoryUserIdState("success");
                     } else {
                         setauthorizedSignatoryUserIdState("error");
                     }
-                    handleChange(event)
+                    
                     }}
                 />             
                 <FormText>
                 We'll invite this user to create a profile and digitally sign the necessary documentation. <a href="#" onClick={() => {
                     setAuthorizedSigantory(false)
-                    resetAuthorizedSignatory()
                 }}>
                 Click here</a> if you should be the authorizied signatory for this business.
                 </FormText>           
@@ -203,8 +187,8 @@ function ProfileSignUp(props) {
                     <Input 
                         id="noFein"
                         type="checkbox" 
-                        defaultChecked={agreeSevenAware}     
-                        onClick={() => setAgreeSevenAware(!agreeSevenAware)}
+                        defaultChecked={sevenAwareAgree}     
+                        onClick={() => setSevenAwareAgree(!sevenAwareAgree)}
                     />{' '}I understand how 7(a)ware will use my information and keep it secure.
                         <span className="form-check-sign">
                             <span className="check"></span>

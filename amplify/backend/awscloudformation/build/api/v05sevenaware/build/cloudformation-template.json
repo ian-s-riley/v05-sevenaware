@@ -102,20 +102,7 @@
             }
           ]
         },
-        "AuthenticationType": "API_KEY",
-        "AdditionalAuthenticationProviders": [
-          {
-            "AuthenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "UserPoolConfig": {
-              "UserPoolId": {
-                "Ref": "AuthCognitoUserPoolId"
-              },
-              "AwsRegion": {
-                "Ref": "AWS::Region"
-              }
-            }
-          }
-        ]
+        "AuthenticationType": "API_KEY"
       }
     },
     "GraphQLAPIKey": {
@@ -127,14 +114,14 @@
             "ApiId"
           ]
         },
-        "Description": "v05-sevenaware-apikey",
+        "Description": "v05-sevenaware",
         "Expires": {
           "Fn::If": [
             "APIKeyExpirationEpochIsPositive",
             {
               "Ref": "APIKeyExpirationEpoch"
             },
-            1658784247
+            1658864733
           ]
         }
       },
